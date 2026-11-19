@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interview Quiz: SQL & Python</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff7ec;--card:#ffffff;--ink:#2b2250;--mute:#6f6a8c;--line:#eadfce;--p:#7c3aed;--sql:#0ea5e9;--py:#f59e0b;--ok:#16a34a;--bad:#e11d48;--okbg:#dcfce7;--badbg:#ffe4e6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17132b;--card:#221c40;--ink:#f3efff;--mute:#a9a3c9;--line:#3a3262;--okbg:#12361f;--badbg:#44162a}}
+:root[data-theme="dark"]{--bg:#17132b;--card:#221c40;--ink:#f3efff;--mute:#a9a3c9;--line:#3a3262;--okbg:#12361f;--badbg:#44162a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 60px}
+header{background:linear-gradient(120deg,#7c3aed,#ec4899 55%,#f59e0b);color:#fff;border-radius:24px;padding:22px 22px 18px;box-shadow:0 8px 0 rgba(124,58,237,.25)}
+header h1{margin:0;font-size:clamp(24px,5vw,36px);font-weight:900;letter-spacing:-.5px}
+header p{margin:4px 0 0;opacity:.92}
+nav{display:flex;gap:8px;margin:18px 0;flex-wrap:wrap}
+nav button{flex:1;min-width:110px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;padding:10px 14px;border-radius:16px;cursor:pointer}
+nav button.on{background:var(--p);border-color:var(--p);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px}
+h2{margin:0 0 10px;font-size:20px;font-weight:900}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{border:2px solid transparent;border-radius:999px;padding:4px 12px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;color:#fff}
+.chip.off{background:transparent!important;color:var(--mute);border-color:var(--line)}
+.tag{display:inline-block;border-radius:999px;padding:1px 10px;font-size:13px;font-weight:700;color:#fff}
+.subj{display:inline-block;border-radius:8px;padding:1px 9px;font-size:13px;font-weight:900;color:#fff}
+.SQL{background:var(--sql)}.Python{background:var(--py);color:#3a2500}
+.btn{border:0;background:var(--p);color:#fff;font:inherit;font-weight:900;padding:11px 20px;border-radius:14px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.del{background:var(--bad)}
+.btn:focus-visible,.opt:focus-visible,.chip:focus-visible,nav button:focus-visible{outline:3px solid #ec4899;outline-offset:2px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:9px 12px}
+textarea{resize:vertical;min-height:70px}
+label{font-weight:700;font-size:14px;color:var(--mute);display:block;margin:10px 0 4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.qtext{font-size:20px;font-weight:900;margin:10px 0 14px;white-space:pre-wrap}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:9px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--p)}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#0ea5e9,#ec4899,#f59e0b);transition:width .3s}
+.big{font-size:56px;font-weight:900;line-height:1;margin:6px 0}
+.mute{color:var(--mute)}
+.note{background:#fef3c7;color:#4a3300;border-radius:12px;padding:10px 12px;margin-top:10px;white-space:pre-wrap}
+.expl{background:var(--okbg);border-radius:12px;padding:10px 12px;margin-top:6px}
+.qi{border-left:8px solid var(--sql)}.qi.Python{border-left-color:var(--py)}
+pre.code{background:#1e1b3a;color:#f3efff;border-radius:12px;padding:12px;overflow-x:auto;white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:8px 0}
+textarea.code{font-family:ui-monospace,Menlo,Consolas,monospace;min-height:170px}
+.prompt{white-space:pre-wrap;margin-bottom:6px}
+.sol{border:2px solid var(--ok);border-radius:16px;padding:14px;margin-top:16px}
+.lv{display:inline-block;border-radius:8px;padding:1px 9px;font-size:13px;font-weight:900;color:#fff}.lv.B{background:#16a34a}.lv.I{background:#f97316}.lv.A{background:#e11d48}
+.star{background:transparent;border:0;font-size:22px;line-height:1;cursor:pointer;color:#f59e0b;padding:0 4px}
+.opt.sel{border-color:var(--p);box-shadow:inset 0 0 0 2px var(--p)}
+.rt{border-collapse:collapse;width:100%;font-size:14px}.rt th,.rt td{border:1px solid var(--line);padding:6px 10px;text-align:left;white-space:nowrap}.rt th{background:var(--bg)}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>Interview Quiz Lab</h1><p>SQL and Python practice. Tag questions, jot notes, and quiz yourself by topic.</p></header>
+<nav id="nav"></nav>
+<main id="app"></main>
+</div>
+<script>
+const KEY='iqlab.v1';
+const PAL=['#7c3aed','#ec4899','#0ea5e9','#16a34a','#f97316','#e11d48','#0d9488','#8b5cf6','#d97706','#2563eb'];
+const seed=[
+{subj:'SQL',q:'Which join returns all rows from the left table, plus matching rows from the right?',opts:['INNER JOIN','LEFT JOIN','CROSS JOIN','FULL JOIN'],ans:1,tags:['joins'],expl:'LEFT JOIN keeps every left row; unmatched right columns are NULL.'},
+{subj:'SQL',q:'What is the difference between WHERE and HAVING?',opts:['No difference','WHERE filters rows before grouping; HAVING filters groups after','HAVING runs before WHERE','WHERE only works with joins'],ans:1,tags:['aggregation','filtering'],expl:'WHERE cannot use aggregates; HAVING can.'},
+{subj:'SQL',q:'Which function gives consecutive ranking with no gaps after ties?',opts:['ROW_NUMBER()','RANK()','DENSE_RANK()','NTILE()'],ans:2,tags:['window functions'],expl:'DENSE_RANK gives 1,1,2; RANK gives 1,1,3.'},
+{subj:'SQL',q:'What does COUNT(column) ignore that COUNT(*) does not?',opts:['Duplicates','NULL values','Zeros','Empty strings'],ans:1,tags:['aggregation','nulls'],expl:'COUNT(column) skips NULLs; COUNT(*) counts every row.'},
+{subj:'SQL',q:'Which keyword removes duplicate rows from a result set?',opts:['UNIQUE','DISTINCT','GROUP','DEDUPE'],ans:1,tags:['filtering'],expl:'SELECT DISTINCT removes duplicate result rows.'},
+{subj:'SQL',q:'What is a CTE?',opts:['A stored table on disk','A named temporary result set defined with WITH','A type of index','A trigger'],ans:1,tags:['query design'],expl:'WITH cte AS (...) makes complex queries readable and supports recursion.'},
+{subj:'Python',q:'What is the output of: print(type([]) is list)?',opts:['True','False','Error','None'],ans:0,tags:['basics'],expl:'type([]) returns the list class itself.'},
+{subj:'Python',q:'Which structure has O(1) average lookup by key?',opts:['list','tuple','dict','str'],ans:2,tags:['data structures','complexity'],expl:'Dicts are hash tables.'},
+{subj:'Python',q:'What does a list comprehension [x*x for x in range(3)] produce?',opts:['[0, 1, 4]','[1, 4, 9]','[0, 1, 2]','(0, 1, 4)'],ans:0,tags:['basics','comprehensions'],expl:'range(3) gives 0, 1, 2.'},
+{subj:'Python',q:'Which is mutable?',opts:['tuple','str','frozenset','list'],ans:3,tags:['data structures'],expl:'Lists can change in place; tuples, strings and frozensets cannot.'},
+{subj:'Python',q:'What does the yield keyword create?',opts:['A decorator','A generator','A class','A thread'],ans:1,tags:['generators'],expl:'A function using yield returns a lazy generator.'},
+{subj:'Python',q:'In pandas, which call merges two DataFrames like a SQL join?',opts:['df.concat()','df.merge()','df.stack()','df.apply()'],ans:1,tags:['pandas','joins'],expl:'merge() supports how="inner", "left", "right" and "outer".'}
+];
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||!S.qs){S={qs:seed.map((q,i)=>({id:'s'+i,note:'',...q})),stats:{}}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+// Format per line: question|correct answer|wrong|wrong|wrong  (options are shuffled on first load)
+const BANK=[
+['SQL','sql basics',`Which clause filters rows before grouping?|WHERE|HAVING|ORDER BY|LIMIT
+Default sort order of ORDER BY?|Ascending|Descending|Random|Insertion order
+Which clause returns the first 5 rows in Postgres/MySQL?|LIMIT 5|TOP 5|FIRST 5|ROWNUM 5
+Which operator does pattern matching?|LIKE|MATCH|HAS|CONTAINS
+In LIKE, % matches?|Zero or more characters|Exactly one character|Digits only|A literal percent sign
+In LIKE, _ matches?|Exactly one character|Any string|Whitespace|Nothing
+Which tests an inclusive range?|BETWEEN|WITHIN|RANGE|SPAN
+Which clause is logically evaluated first?|FROM|SELECT|ORDER BY|HAVING
+Can a SELECT alias be used in WHERE?|No, aliases are defined after WHERE runs|Yes, always|Only for tables|Only inside a CTE
+What does IN do?|Matches any value in a list|Inserts rows|Joins tables|Sorts rows`],
+['SQL','joins',`Which join keeps only matching rows from both tables?|INNER JOIN|LEFT JOIN|FULL JOIN|CROSS JOIN
+Which join returns a Cartesian product?|CROSS JOIN|INNER JOIN|SELF JOIN|NATURAL JOIN
+How do you find rows in A with no match in B?|LEFT JOIN then WHERE b.id IS NULL|INNER JOIN|UNION|GROUP BY
+Joining a table to itself is a?|Self join|Loop join|Mirror join|Cross apply
+A has 3 rows, B has 4. How many rows does A CROSS JOIN B return?|12|7|4|3
+FULL OUTER JOIN returns?|All rows from both, NULLs where unmatched|Only matches|Left rows only|Right rows only
+A WHERE filter on the right table of a LEFT JOIN effectively makes it a?|INNER JOIN|CROSS JOIN|FULL JOIN|No change
+To list employees with their managers (same table) use?|Self join on manager_id = id|CROSS JOIN|UNION|GROUP BY
+JOIN ... USING(col) requires?|Same column name in both tables|A primary key|An index|Unique values
+Many-to-many relationships are modeled with a?|Junction table|Single column|View|Trigger
+Unexpected duplicate rows after a join usually mean?|One-to-many fan-out|Syntax error|Missing index|NULL keys
+A left row matches 2 right rows in a LEFT JOIN. Rows returned for it?|2|1|0|Error`],
+['SQL','aggregation',`Which counts NULL values too?|COUNT(*)|COUNT(col)|SUM(col)|AVG(col)
+AVG of 2, 4, NULL is?|3|2|6|NULL
+Which clause filters aggregated groups?|HAVING|WHERE|LIMIT|DISTINCT
+Non-aggregated SELECT columns must appear in?|GROUP BY|ORDER BY|HAVING|WHERE
+COUNT(DISTINCT col) counts?|Unique non-NULL values|All rows|Only NULLs|Duplicates
+SUM over zero rows returns?|NULL|0|Error|1
+Which gives a total per department?|GROUP BY dept|ORDER BY dept|PARTITION dept|WHERE dept
+Are aggregate functions allowed in WHERE?|No|Yes|Only COUNT|Only MAX
+MAX works on?|Numbers, dates and strings|Numbers only|Dates only|Strings only
+GROUP BY ROLLUP adds?|Subtotals and a grand total|Random sample|Row numbers|Joins
+STRING_AGG or GROUP_CONCAT does what?|Concatenates values in a group|Splits strings|Sorts groups|Counts characters
+Departments with more than 5 employees?|GROUP BY dept HAVING COUNT(*) > 5|WHERE COUNT(*) > 5|ORDER BY COUNT(*) > 5|GROUP BY COUNT(*) > 5`],
+['SQL','window functions',`Window functions are defined with?|OVER()|WINDOW BY|GROUP OVER|PARTITION()
+ROW_NUMBER on tied values gives?|Unique numbers|The same number|Skips numbers|Error
+RANK values 1,1 are followed by?|3|2|1|NULL
+DENSE_RANK values 1,1 are followed by?|2|3|1|4
+Which returns the previous row's value?|LAG|LEAD|FIRST_VALUE|NTILE
+Which returns the next row's value?|LEAD|LAG|LAST_VALUE|RANK
+PARTITION BY is like?|GROUP BY without collapsing rows|WHERE|JOIN|HAVING
+Running total uses?|SUM(x) OVER (ORDER BY d)|SUM(x) GROUP BY d|COUNT(*) OVER()|LAG(x)
+NTILE(4) does?|Splits rows into 4 buckets|Takes the top 4|Ranks by 4|Lags 4 rows
+Top N per group approach?|ROW_NUMBER() OVER (PARTITION BY g ORDER BY x DESC), then filter <= N|LIMIT N|GROUP BY N|TOP N only
+Window functions can appear in?|SELECT and ORDER BY|WHERE|GROUP BY|HAVING
+3-row moving average frame?|ROWS BETWEEN 2 PRECEDING AND CURRENT ROW|ROWS 3|RANGE 3|LIMIT 3`],
+['SQL','subqueries,cte',`A CTE starts with?|WITH|CTE|TEMP|DEFINE
+Recursive CTEs are useful for?|Hierarchies and trees|Sorting|Indexes|Locking
+A subquery returning one value is a?|Scalar subquery|Derived table|Lateral join|Window
+EXISTS returns?|TRUE if the subquery returns any row|A row count|The first row|NULL
+NOT IN pitfall?|A NULL in the list returns no rows|It is always slow|Syntax error|Duplicates
+A subquery in the FROM clause is a?|Derived table|Scalar subquery|View|Index
+A correlated subquery?|References the outer query|Runs only once|Uses no table|Is a CTE
+Second highest salary?|MAX(sal) where sal < (SELECT MAX(sal) FROM t)|ORDER BY sal LIMIT 2|MIN(sal)|SELECT 2
+A CTE lives for?|One statement|The session|Forever|The transaction
+ANY and ALL are used with?|Comparisons against a subquery|Joins|Indexes|Grants`],
+['SQL','ddl,constraints',`What uniquely identifies a row?|Primary key|Foreign key|Check|Default
+A foreign key enforces?|Referential integrity|Sorting|Speed|Compression
+Which removes all rows fast (often not rollback-able)?|TRUNCATE|DELETE|DROP|REMOVE
+DROP vs DELETE?|DROP removes the table, DELETE removes rows|They are the same|DELETE removes the table|DROP removes rows
+Add a column with?|ALTER TABLE ... ADD COLUMN|UPDATE TABLE|INSERT COLUMN|MODIFY ROW
+Does a UNIQUE column allow NULL?|Usually yes (DB-specific)|Never|Only one row|Error
+A CHECK constraint?|Validates a condition on values|Joins tables|Creates an index|Locks a row
+DDL stands for?|Data Definition Language|Data Delivery Layer|Dynamic Data Link|Database Design Logic
+Which is DML?|INSERT|CREATE|ALTER|GRANT
+Normalization aims to?|Reduce redundancy|Increase redundancy|Encrypt data|Speed up backups
+3NF removes?|Transitive dependencies|Primary keys|Joins|NULLs`],
+['SQL','indexes,performance',`Indexes mainly speed up?|Reads and lookups|Inserts|Deletes|Backups
+Cost of too many indexes?|Slower writes and more storage|Slower reads|Data loss|Nothing
+Default index structure in most databases?|B-tree|Stack|Queue|Array
+A function on an indexed column in WHERE can?|Prevent index use|Speed it up|Do nothing|Create an index
+EXPLAIN shows?|The query plan|Table data|Locks|Users
+Composite index (a,b) helps WHERE on?|a, or a and b|b only|Neither|b and c only
+A clustered index?|Defines physical row order|Is a copy of the table|Is a hash|Is temporary
+Why avoid SELECT *?|Reads unneeded columns|Syntax error|Locks the table|Nothing
+Does LIKE '%abc' use a normal index?|Generally no|Always|Only unique|Only PK
+A covering index?|Contains all columns the query needs|Covers the table|Is always unique|Is hashed`],
+['SQL','nulls',`NULL = NULL evaluates to?|NULL (unknown)|TRUE|FALSE|0
+How do you test for NULL?|IS NULL|= NULL|== NULL|NULL()
+COALESCE(a, b) returns?|First non-NULL value|Last value|Concatenation|Sum
+5 + NULL equals?|NULL|5|0|Error
+NULLIF(a, b) returns?|NULL if a equals b|Both NULL|a if b|Error
+ORDER BY places NULLs?|Depends on the database|Always first|Always last|Removed
+COUNT(*) and COUNT(col) differ when?|col contains NULLs|Never|col is a PK|Always
+Does WHERE col <> 'x' keep rows where col is NULL?|No|Yes|Only in joins|Error`],
+['SQL','sets,dates,strings',`UNION vs UNION ALL?|UNION removes duplicates|UNION ALL removes duplicates|They are the same|UNION is faster
+INTERSECT returns?|Rows common to both queries|All rows|Different rows|Left rows
+EXCEPT or MINUS returns?|Rows in the first but not the second|Common rows|All rows|Second only
+UNION requires?|Same column count and compatible types|Same column names|Same table|An index
+Current date in standard SQL?|CURRENT_DATE|NOW_DATE|TODAY|GETDAYS
+Extract the year from a date?|EXTRACT(YEAR FROM d)|YEAR OF d|d.year()|GETYEAR
+CONCAT does?|Joins strings|Splits strings|Trims strings|Counts characters
+TRIM does?|Removes leading and trailing spaces|Cuts the middle|Uppercases|Pads
+CASE WHEN provides?|Conditional logic|A loop|A join|An index
+SUBSTRING does?|Extracts part of a string|Joins strings|Sorts|Counts`],
+['SQL','transactions',`ACID: the A stands for?|Atomicity|Availability|Accuracy|Alignment
+COMMIT does?|Saves the transaction|Undoes it|Locks tables|Drops data
+ROLLBACK does?|Undoes uncommitted changes|Saves changes|Creates a table|Grants rights
+A dirty read is?|Reading uncommitted data|Reading deleted rows|A slow read|An index read
+A deadlock is?|Two transactions waiting on each other|A slow query|A lost index|A syntax error
+Which isolation level allows dirty reads?|READ UNCOMMITTED|READ COMMITTED|SERIALIZABLE|REPEATABLE READ
+ACID: the D stands for?|Durability|Dependency|Delay|Duplication
+SAVEPOINT provides?|A partial rollback point|A backup|An index|A lock`],
+['SQL','sql problems',`t(x) holds 1,1,2. What does COUNT(DISTINCT x) return?|2|1|3|0
+t(x) holds 1,2,3. SUM(x) OVER (ORDER BY x) on the last row?|6|3|1|2
+Find duplicate emails?|GROUP BY email HAVING COUNT(*) > 1|WHERE COUNT(*) > 1|DISTINCT email|ORDER BY email
+Delete duplicates but keep the lowest id commonly uses?|ROW_NUMBER() or a self join on id|TRUNCATE|DROP|UNION
+Employees earning more than their manager?|Self join comparing salaries|GROUP BY|UNION|CROSS JOIN
+Customers with no orders?|LEFT JOIN orders WHERE o.id IS NULL|INNER JOIN|UNION|GROUP BY
+Month-over-month change uses?|LAG()|COUNT()|NTILE()|DISTINCT
+What does COALESCE(NULL, NULL, 3) return?|3|NULL|0|Error
+Pivot rows to columns commonly uses?|CASE WHEN with aggregates|UNION|LIMIT|EXISTS
+Top 3 salaries per department?|DENSE_RANK() PARTITION BY dept, filter <= 3|LIMIT 3|TOP 3 overall|GROUP BY 3`],
+['Python','python basics',`type(3/2) is?|float|int|str|decimal
+What is 7//2?|3|3.5|4|2
+What is 2**3?|8|6|9|5
+bool([]) is?|False|True|None|Error
+Which is immutable?|tuple|list|dict|set
+is vs ==?|is compares identity, == compares value|is compares value|They are the same|== compares identity
+'a' in 'cat' gives?|True|False|Error|None
+print(0.1 + 0.2 == 0.3) gives?|False|True|Error|None
+len('héllo') is?|5|6|4|Error
+int('5') + 1 is?|6|'51'|Error|5
+Which value is falsy?|0|'0'|[0]|' '
+-7 % 3 is?|2|-1|1|-2`],
+['Python','strings',`'abc'[::-1] gives?|'cba'|'abc'|'bca'|Error
+'a,b'.split(',') gives?|['a', 'b']|'a b'|('a', 'b')|['a,b']
+How do you join a list of strings with commas?|', '.join(lst)|lst.join(', ')|join(lst)|lst.concat()
+'Hi'.lower() gives?|'hi'|'HI'|'Hi'|Error
+f'{2+3}' gives?|'5'|'2+3'|'23'|Error
+'abc'.find('z') returns?|-1|None|0|Error
+strip() removes?|Leading and trailing whitespace|All spaces|Digits|Letters
+Strings in Python are?|Immutable|Mutable|Lists|Sets`],
+['Python','data structures',`Dict keys must be?|Hashable|Strings only|Ints only|Sorted
+A set removes?|Duplicates|Nones|Ints|Order only
+append vs extend?|append adds one item, extend adds each element|They are the same|extend adds one item|append adds many
+d.get('k') for a missing key returns?|None|KeyError|0|''
+lst[-1] is?|The last item|The first item|Error|The second item
+sorted(lst) returns?|A new list|None|A set|The same list
+lst.sort() returns?|None|A new list|A tuple|A sorted copy
+How do you write a one-item tuple?|(1,)|(1)|[1]|{1}
+Safe copy of a nested list?|copy.deepcopy|list()|=|slicing
+Easy way to count occurrences?|collections.Counter|collections.deque|set|zip
+For a={1,2} and b={2,3}, what is a & b?|{2}|{1,2,3}|{1}|{3}
+Dict ordering?|Insertion ordered (3.7+)|Random|Sorted|Reversed
+list(zip([1,2], 'ab')) gives?|[(1,'a'), (2,'b')]|[1,2,'a','b']|Error|[(1,2)]
+Remove and return the last item?|pop()|remove()|del|discard()`],
+['Python','comprehensions',`[x for x in range(3)] gives?|[0, 1, 2]|[1, 2, 3]|[0, 1, 2, 3]|(0, 1, 2)
+{k: v for ...} builds a?|dict|set|list|tuple
+[x for x in range(6) if x % 2 == 0] gives?|[0, 2, 4]|[1, 3, 5]|[0, 2, 4, 6]|[2, 4]
+(x for x in range(3)) is a?|Generator expression|Tuple|List|Set
+{x % 2 for x in range(5)} gives?|{0, 1}|{0,1,0,1,0}|[0, 1]|{1}
+Length of [a*b for a in (1,2) for b in (3,4)]?|4|2|3|8`],
+['Python','functions',`def f(a=[]) pitfall?|The list is shared across calls|A new list each call|Syntax error|List is immutable
+*args collects?|Extra positional args as a tuple|Keyword args|A dict|A list
+**kwargs collects?|Keyword args as a dict|A tuple|A list|A set
+lambda creates?|An anonymous function|A loop|A class|A module
+A function with no return gives?|None|0|''|Error
+map(f, it) returns?|An iterator|A list|A tuple|A dict
+LEGB scope order?|Local, Enclosing, Global, Built-in|Local, Global, Enclosing, Built-in|Global, Local, Built-in, Enclosing|Built-in, Local, Global, Enclosing
+nonlocal is used to?|Modify an enclosing function's variable|Create a global|Delete a name|Import a module
+A closure is?|A function remembering its enclosing scope|A class|A loop|An exception
+Can a function be passed as an argument?|Yes, functions are first-class|No|Only lambdas|Only builtins`],
+['Python','oop',`The constructor-like method is?|__init__|__start__|__main__|__create__
+self refers to?|The current instance|The class|The module|The parent
+Inheritance syntax?|class B(A):|class B<A>|B extends A|class B:A
+super() does?|Accesses the parent class|Deletes a class|Creates a class|Copies a class
+__str__ is for?|A readable string form|Equality|Hashing|Deletion
+@staticmethod receives?|Neither self nor cls|self|cls|Both
+@classmethod receives as first arg?|cls|self|Nothing|obj
+__repr__ aims for?|An unambiguous representation|A pretty UI string|Hashing|Sorting
+Polymorphism means?|Same interface, different behaviour|Many files|Copying objects|Hiding data
+@property lets you?|Access a method like an attribute|Make it static|Make it private|Loop
+__eq__ defines?|The == operator|The is operator|The + operator|The in operator
+A name like __x is?|Name-mangled to discourage outside access|Deleted|Public|Static`],
+['Python','generators,iterators',`yield does?|Pauses the function and returns a value|Ends the program|Imports a module|Raises an error
+next() on an exhausted generator raises?|StopIteration|KeyError|None|ValueError
+An iterable needs?|__iter__|__len__|__call__|__add__
+Generators are?|Lazy and memory efficient|Eager|Lists|Mutable
+Can you iterate a generator twice?|No, it is exhausted after one pass|Yes|Only lists|Always
+itertools.chain does?|Concatenates iterables|Sorts|Filters|Zips
+list(enumerate(['a','b'])) gives?|[(0,'a'), (1,'b')]|[('a',0), ('b',1)]|['a','b']|[0, 1]
+list(range(1, 10, 3)) gives?|[1, 4, 7]|[1, 4, 7, 10]|[1, 3, 6]|[4, 7, 10]`],
+['Python','exceptions,files',`How do you catch errors?|try / except|catch|rescue|handle
+A finally block?|Always runs|Only on error|Never|Only on success
+The else clause of try runs?|If no exception occurred|Always|On error|Never
+How do you raise an error?|raise ValueError('x')|throw ValueError|error(x)|raise(x)
+with open(...) as f?|Closes the file automatically|Locks the file|Deletes the file|Copies the file
+File mode for append?|'a'|'w'|'r'|'x'
+int('abc') raises?|ValueError|TypeError|KeyError|IndexError
+d['missing'] raises?|KeyError|IndexError|ValueError|NameError`],
+['Python','pandas',`df.head() shows?|The first rows|The last rows|Columns|Stats
+How do you detect missing values?|df.isna()|df.empty|df.null()|df.miss()
+Group and aggregate?|df.groupby('c').sum()|df.agg only|df.merge|df.pivot
+Select columns a and b?|df[['a', 'b']]|df['a', 'b']|df.a.b|df(a, b)
+loc vs iloc?|loc is label-based, iloc is position-based|They are the same|loc uses positions|iloc uses labels
+Remove duplicate rows?|drop_duplicates()|unique()|distinct()|dedupe()
+Replace NaN values?|fillna()|nan()|fill()|na_fill()
+Rows where x > 5?|df[df['x'] > 5]|df.filter(x > 5)|df.x > 5()|df.where(x)
+Long to wide reshape?|pivot or pivot_table|melt|stack only|merge
+melt does?|Wide to long|Long to wide|Sorts|Joins
+Row count of a DataFrame?|len(df)|df.cols|df.size[1]|df.count_rows
+apply(axis=1) applies a function?|Row by row|Column by column|To the index only|To the header
+`],
+['Python','algorithms,problems',`Lookup in a list is?|O(n)|O(1)|O(log n)|O(n^2)
+Binary search requires?|Sorted data|Unique values|Strings|A dict
+Reverse a list in place?|lst.reverse()|reversed(lst)|lst[::-1]|lst.rev()
+Palindrome check for s?|s == s[::-1]|s.rev() == s|s.is_pal()|s[1:] == s
+Nested loops over n items are typically?|O(n^2)|O(n)|O(log n)|O(1)
+Memoize Fibonacci with?|functools.lru_cache|itertools|heapq|bisect
+Fastest way to find duplicates?|Track seen items in a set|Nested loops|Sort twice|Recursion
+Flatten [[1],[2]]?|[x for s in L for x in s]|sum(L)|L.flat()|L[0] + L[1] only
+Anagram check?|sorted(a) == sorted(b)|a == b|len(a) == len(b)|a in b
+Which module gives a min-heap?|heapq|bisect|array|queue.Stack`],
+['Python','advanced',`A decorator is?|A function that wraps another function|A class|A loop|A module
+The GIL means?|One thread runs Python bytecode at a time|Global import lock|Garbage list|Graph library
+Python memory management uses?|Reference counting plus garbage collection|Manual free|None|Stack only
+if __name__ == '__main__' runs when?|The file is run directly|The file is imported|Tests run|Never
+A virtual environment is?|An isolated package space|A virtual machine|A Docker image|A compiler
+pip freeze > requirements.txt does?|Saves installed dependencies|Installs them|Removes them|Updates them
+f(*lst) does?|Spreads items as arguments|Multiplies|Makes a pointer|Errors
+Shallow vs deep copy?|Shallow copies references to nested objects|They are the same|Deep shares objects|Shallow clones everything`]
+];
+if(!S.ver||S.ver<2){
+ const have=new Set(S.qs.map(q=>q.q));
+ BANK.forEach(([subj,tags,txt],g)=>txt.split('\n').forEach((ln,i)=>{
+  const p=ln.split('|');if(p.length<5||have.has(p[0]))return;
+  const o=p.slice(1,5).map((t,k)=>({t,k,r:Math.random()})).sort((a,b)=>a.r-b.r);
+  S.qs.push({id:'b'+g+'_'+i,subj,q:p[0],opts:o.map(x=>x.t),ans:o.findIndex(x=>x.k===0),tags:tags.split(','),expl:'',note:''});
+ }));
+ S.ver=2;save();
+}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const col=t=>{let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return PAL[h%PAL.length]};
+const allTags=()=>[...new Set(S.qs.flatMap(q=>q.tags))].sort();
+const tagHtml=t=>`<span class="tag" style="background:${col(t)}">${esc(t)}</span>`;
+let tab='quiz',cfg={subj:'All',lv:'All',tags:[],n:10},run=null,flt={subj:'All',tag:'',lv:'All'};
+
+function nav(){
+ const t=[['quiz','Quiz'],['prob','Problems'],['rev','Review ('+dueN()+' due)'],['mock','Mock'],['search','Search'],['lab','SQL Lab'],['dash','Progress'],['bank','Question bank'],['add','Add new']];
+ $('#nav').innerHTML=t.map(([k,l])=>`<button class="${tab===k?'on':''}" data-t="${k}">${l}</button>`).join('');
+ $('#nav').querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.t==='prob'){cur=null;adding=false}tab=b.dataset.t;run=null;render()});
+}
+function render(){nav();({quiz:vQuiz,prob:vProb,rev:vRev,mock:vMock,search:vSearch,lab:vLab,dash:vDash,bank:vBank,add:vAdd})[tab]()}
+
+function pool(){return S.qs.filter(q=>(cfg.subj==='All'||q.subj===cfg.subj)&&(cfg.lv==='All'||q.lv===cfg.lv)&&(!cfg.star||(S.stars||{})[q.id])&&(!cfg.tags.length||q.tags.some(t=>cfg.tags.includes(t))))}
+
+function vQuiz(){
+ if(run)return run.done?vResult():vQ();
+ const tags=allTags(),p=pool().length;
+ $('#app').innerHTML=`<div class="card"><h2>Build your quiz</h2>
+ <label>Subject</label><div class="row">${['All','SQL','Python'].map(s=>`<button class="chip ${cfg.subj===s?'':'off'}" style="background:${s==='SQL'?'var(--sql)':s==='Python'?'var(--py)':'var(--p)'}" data-s="${s}">${s}</button>`).join('')}</div>
+ <label>Level</label><div class="row">${[['All','All levels'],['B','Basic'],['I','Intermediate'],['A','Advanced']].map(([k,l])=>`<button class="chip ${cfg.lv===k?'':'off'}" style="background:${LVC[k]}" data-l="${k}">${l}</button>`).join('')}</div>
+ <div class="row" style="margin-top:12px"><button class="chip ${cfg.star?'':'off'}" style="background:#f59e0b" id="qst">★ Starred only</button></div>
+ <label>Topics (none selected means all)</label><div class="row">${tags.map(t=>`<button class="chip ${cfg.tags.includes(t)?'':'off'}" style="background:${col(t)}" data-g="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+ <label>Number of questions</label><select id="n">${[5,10,15,20].map(n=>`<option ${cfg.n===n?'selected':''}>${n}</option>`).join('')}</select>
+ <p class="mute">${p} question${p===1?'':'s'} match your picks.</p>
+ <button class="btn" id="go" ${p?'':'disabled'}>Start quiz</button></div>`;
+ document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{cfg.subj=b.dataset.s;vQuiz()});
+ $('#qst').onclick=()=>{cfg.star=!cfg.star;vQuiz()};
+ document.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{cfg.lv=b.dataset.l;vQuiz()});
+ document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const t=b.dataset.g;cfg.tags=cfg.tags.includes(t)?cfg.tags.filter(x=>x!==t):[...cfg.tags,t];vQuiz()});
+ $('#n').onchange=e=>cfg.n=+e.target.value;
+ $('#go').onclick=()=>{const qs=pool().map(q=>({q,r:Math.random()})).sort((a,b)=>a.r-b.r).slice(0,cfg.n).map(x=>x.q);run={qs,i:0,score:0,picked:null,miss:{}};render()};
+}
+function vQ(){
+ const {qs,i}=run,q=qs[i];
+ $('#app').innerHTML=`<div class="card"><div class="bar"><i style="width:${i/qs.length*100}%"></i></div>
+ <div class="row"><span class="subj ${q.subj}">${q.subj}</span>${lvB(q.lv)}${q.tags.map(tagHtml).join('')}${starB(q.id)}<span class="mute" style="margin-left:auto">Question ${i+1} of ${qs.length}</span></div>
+ <div class="qtext">${esc(q.q)}</div>
+ ${q.opts.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}
+ <div id="fb"></div></div>`;
+ document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+}
+function pick(k){
+ const q=run.qs[run.i];if(run.picked!==null)return;run.picked=k;
+ const ok=k===q.ans;if(ok)run.score++;else q.tags.forEach(t=>run.miss[t]=(run.miss[t]||0)+1);
+ const st=S.stats[q.id]||{a:0,c:0};st.a++;if(ok)st.c++;srUpd(st,ok);S.stats[q.id]=st;logDay();
+ document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(j===q.ans)b.classList.add('ok');else if(j===k)b.classList.add('bad')});
+ const last=run.i===run.qs.length-1;
+ $('#fb').innerHTML=`<p><b>${ok?'Correct!':'Not quite.'}</b></p>${q.expl?`<div class="expl">${esc(q.expl)}</div>`:''}
+ ${q.note?`<div class="note"><b>Your note:</b> ${esc(q.note)}</div>`:''}
+ <label>Add or edit your note</label><textarea id="nt" placeholder="What should you remember about this one?">${esc(q.note||'')}</textarea>
+ <div class="row" style="margin-top:12px"><button class="btn" id="nx">${last?'See results':'Next question'}</button></div>`;
+ $('#nt').onchange=e=>{q.note=e.target.value;save()};
+ $('#nx').onclick=()=>{q.note=$('#nt').value;save();run.picked=null;if(last)run.done=true;else run.i++;render()};
+}
+function vResult(){
+ const {qs,score,miss}=run,pc=Math.round(score/qs.length*100);
+ const weak=Object.entries(miss).sort((a,b)=>b[1]-a[1]);
+ $('#app').innerHTML=`<div class="card" style="text-align:center"><h2>${pc>=80?'Nice work!':pc>=50?'Getting there!':'Keep practising!'}</h2>
+ <div class="big" style="color:var(--p)">${score}/${qs.length}</div><p class="mute">${pc}% correct</p>
+ ${weak.length?`<p><b>Topics to revisit</b></p><div class="row" style="justify-content:center">${weak.map(([t,n])=>`${tagHtml(t)}<span class="mute">missed ${n}</span>`).join(' ')}</div>`:'<p>No missed topics. Perfect run.</p>'}
+ <div class="row" style="justify-content:center;margin-top:18px"><button class="btn" id="again">New quiz</button><button class="btn alt" id="bk">Review notes</button></div></div>`;
+ $('#again').onclick=()=>{run=null;render()};$('#bk').onclick=()=>{tab='bank';run=null;render()};
+}
+
+function vBank(){
+ const tags=allTags();
+ const list=S.qs.filter(q=>(flt.subj==='All'||q.subj===flt.subj)&&(!flt.lv||flt.lv==='All'||q.lv===flt.lv)&&(!flt.tag||q.tags.includes(flt.tag)));
+ $('#app').innerHTML=`<div class="card"><div class="grid"><div><label>Subject</label><select id="fs">${['All','SQL','Python'].map(s=>`<option ${flt.subj===s?'selected':''}>${s}</option>`).join('')}</select></div>
+ <div><label>Topic</label><select id="ft"><option value="">All topics</option>${tags.map(t=>`<option ${flt.tag===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div></div>
+ <label>Level</label><select id="fl">${lvOpts(flt.lv||'All',1)}</select>
+ <p class="mute" style="margin-bottom:0">${list.length} question${list.length===1?'':'s'}</p></div>
+ ${list.map(q=>{const st=S.stats[q.id];return `<div class="card qi ${q.subj}"><div class="row"><span class="subj ${q.subj}">${q.subj}</span>${lvB(q.lv)}${starB(q.id)}${q.tags.map(tagHtml).join('')}${st?`<span class="mute" style="margin-left:auto">${st.c}/${st.a} right</span>`:''}</div>
+ <div class="qtext" style="font-size:17px">${esc(q.q)}</div>
+ <div class="mute">Answer: <b style="color:var(--ok)">${esc(q.opts[q.ans])}</b></div>
+ <label>Notes</label><textarea data-n="${q.id}" placeholder="Write a note...">${esc(q.note||'')}</textarea>
+ <label>Tags (comma separated)</label><input data-t="${q.id}" value="${esc(q.tags.join(', '))}">
+ <div class="row" style="margin-top:12px"><button class="btn del" data-d="${q.id}">Delete</button></div></div>`}).join('')||'<div class="card mute">No questions match. Try another filter or add one.</div>'}`;
+ $('#fs').onchange=e=>{flt.subj=e.target.value;vBank()};$('#ft').onchange=e=>{flt.tag=e.target.value;vBank()};$('#fl').onchange=e=>{flt.lv=e.target.value;vBank()};
+ document.querySelectorAll('[data-n]').forEach(t=>t.onchange=()=>{S.qs.find(q=>q.id===t.dataset.n).note=t.value;save()});
+ document.querySelectorAll('[data-t]').forEach(t=>t.onchange=()=>{S.qs.find(q=>q.id===t.dataset.t).tags=parse(t.value);save();vBank()});
+ document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{if(b.dataset.arm){S.qs=S.qs.filter(q=>q.id!==b.dataset.d);save();vBank()}else{b.dataset.arm=1;b.textContent='Click again to delete'}});
+}
+const parse=v=>[...new Set(v.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean))];
+
+function vAdd(){
+ $('#app').innerHTML=`<div class="card"><h2>Add to your prep</h2>
+ <label>Type</label><select id="ty"><option value="mc">Quiz question (multiple choice)</option><option value="pr">Problem (no options, solution shown after you answer)</option></select>
+ <div id="ttl" class="hide"><label>Title</label><input id="atl"></div>
+ <label>Level</label><select id="lv">${lvOpts('B')}</select>
+ <label>Subject</label><select id="as"><option>SQL</option><option>Python</option></select>
+ <label id="ql">Question</label><textarea id="aq" placeholder="Type the question"></textarea>
+ <div id="mc"><label>Four answer options (pick the correct one)</label>
+ ${[0,1,2,3].map(i=>`<div class="row" style="margin-bottom:6px"><input type="radio" name="ca" value="${i}" ${i===0?'checked':''} style="width:auto" aria-label="Correct answer ${i+1}"><input class="ao" placeholder="Option ${i+1}" style="flex:1;width:auto"></div>`).join('')}
+ <label>Explanation (optional)</label><input id="ae"></div>
+ <div id="pso" class="hide"><label>Solution</label><textarea class="code" id="asol" spellcheck="false"></textarea></div>
+ <label>Tags (comma separated)</label><input id="at" placeholder="joins, window functions">
+ <label>Notes (optional)</label><textarea id="an"></textarea>
+ <p id="er" style="color:var(--bad);font-weight:700"></p>
+ <button class="btn" id="sv">Save question</button></div>`;
+ $('#ty').onchange=()=>{const pr=$('#ty').value==='pr';$('#mc').classList.toggle('hide',pr);$('#pso').classList.toggle('hide',!pr);$('#ttl').classList.toggle('hide',!pr);$('#ql').textContent=pr?'Problem statement':'Question';$('#er').textContent=''};
+ $('#sv').onclick=()=>{
+  if($('#ty').value==='pr'){
+   const tl=$('#atl').value.trim(),q=$('#aq').value.trim(),s=$('#asol').value.trim();
+   if(!tl||!q||!s){$('#er').textContent='Enter a title, the problem and the solution.';return}
+   S.probs.push({id:'pu'+Date.now(),subj:$('#as').value,title:tl,prompt:q,sol:s,lv:$('#lv').value,tags:parse($('#at').value),note:$('#an').value.trim()});
+   save();tab='prob';cur=null;adding=false;render();return;
+  }
+  const opts=[...document.querySelectorAll('.ao')].map(i=>i.value.trim()),q=$('#aq').value.trim();
+  if(!q||opts.some(o=>!o)){$('#er').textContent='Enter the question and all four options.';return}
+  S.qs.push({id:'u'+Date.now(),subj:$('#as').value,lv:$('#lv').value,q,opts,ans:+document.querySelector('[name=ca]:checked').value,tags:parse($('#at').value),expl:$('#ae').value.trim(),note:$('#an').value.trim()});
+  save();tab='bank';flt={subj:'All',tag:''};render();
+ };
+}
+// ---------- Problems ----------
+// [subject, tags, title, problem, solution]
+const PROBS=[
+['SQL','aggregation,subqueries','Second highest salary','Table employees(id, name, salary, dept_id).\nReturn the second highest distinct salary.',`SELECT MAX(salary) AS second_highest
+FROM employees
+WHERE salary < (SELECT MAX(salary) FROM employees);
+
+-- Alternative that scales to the Nth highest:
+-- SELECT salary FROM (
+--   SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) rk
+--   FROM employees) t WHERE rk = 2 LIMIT 1;`],
+['SQL','aggregation','Find duplicate emails','Table users(id, email).\nList every email that appears more than once, with its count.',`SELECT email, COUNT(*) AS cnt
+FROM users
+GROUP BY email
+HAVING COUNT(*) > 1;
+
+-- HAVING filters groups after aggregation; WHERE cannot use COUNT().`],
+['SQL','joins','Customers with no orders','Tables customers(id, name) and orders(id, customer_id, amount).\nReturn customers who never placed an order.',`SELECT c.id, c.name
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+WHERE o.id IS NULL;
+
+-- Also valid: WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id)
+-- Avoid NOT IN if customer_id can be NULL.`],
+['SQL','window functions','Top 3 salaries per department','Table employees(id, name, salary, dept_id).\nReturn the top 3 salaries in each department (ties share a rank).',`WITH ranked AS (
+  SELECT *, DENSE_RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rk
+  FROM employees
+)
+SELECT dept_id, name, salary
+FROM ranked
+WHERE rk <= 3;
+
+-- Window functions cannot be used in WHERE, so filter in an outer query.`],
+['SQL','joins','Earn more than their manager','Table employees(id, name, salary, manager_id).\nReturn employees who earn more than their manager.',`SELECT e.name
+FROM employees e
+JOIN employees m ON e.manager_id = m.id
+WHERE e.salary > m.salary;
+
+-- Self join: the same table plays the employee and the manager.`],
+['SQL','window functions','Month-over-month revenue change','Table sales(sale_date, amount).\nShow the revenue for each month and the change from the previous month.',`WITH m AS (
+  SELECT DATE_TRUNC('month', sale_date) AS mon, SUM(amount) AS rev
+  FROM sales
+  GROUP BY 1
+)
+SELECT mon, rev,
+       rev - LAG(rev) OVER (ORDER BY mon) AS change
+FROM m
+ORDER BY mon;
+
+-- LAG looks at the previous row; the first month has a NULL change.`],
+['SQL','sql problems','Delete duplicates, keep lowest id','Table users(id, email).\nDelete duplicate rows so each email keeps only the row with the lowest id.',`DELETE FROM users
+WHERE id NOT IN (
+  SELECT MIN(id) FROM users GROUP BY email
+);
+
+-- MySQL cannot select from the table it deletes from directly;
+-- wrap the subquery: NOT IN (SELECT id FROM (SELECT MIN(id) id FROM users GROUP BY email) x)`],
+['SQL','window functions','Running total per customer','Table orders(id, customer_id, order_date, amount).\nShow each order with the running total of amount for that customer, by date.',`SELECT id, customer_id, order_date, amount,
+       SUM(amount) OVER (
+         PARTITION BY customer_id
+         ORDER BY order_date
+       ) AS running_total
+FROM orders;`],
+['SQL','aggregation,joins','Big departments','Tables departments(id, name) and employees(id, dept_id).\nList departments with more than 5 employees and their headcount.',`SELECT d.name, COUNT(*) AS headcount
+FROM departments d
+JOIN employees e ON e.dept_id = d.id
+GROUP BY d.name
+HAVING COUNT(*) > 5;`],
+['SQL','sql problems','Pivot quarters into columns','Table sales(product, quarter, amount) with quarter values Q1 to Q4.\nReturn one row per product with a column for each quarter.',`SELECT product,
+  SUM(CASE WHEN quarter = 'Q1' THEN amount END) AS q1,
+  SUM(CASE WHEN quarter = 'Q2' THEN amount END) AS q2,
+  SUM(CASE WHEN quarter = 'Q3' THEN amount END) AS q3,
+  SUM(CASE WHEN quarter = 'Q4' THEN amount END) AS q4
+FROM sales
+GROUP BY product;
+
+-- CASE inside an aggregate is the portable way to pivot.`],
+['SQL','window functions','Users with 3 consecutive login days','Table logins(user_id, login_date).\nReturn users who logged in on at least 3 consecutive days.',`WITH d AS (SELECT DISTINCT user_id, login_date FROM logins),
+g AS (
+  SELECT user_id, login_date,
+         login_date - (ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY login_date))::int AS grp
+  FROM d
+)
+SELECT DISTINCT user_id
+FROM g
+GROUP BY user_id, grp
+HAVING COUNT(*) >= 3;
+
+-- Consecutive dates minus a running row number give the same constant (grp).
+-- Postgres syntax; adjust date arithmetic for other databases.`],
+['SQL','aggregation','Median salary','Table employees(id, salary).\nReturn the median salary.',`SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY salary) AS median_salary
+FROM employees;
+
+-- Without it: order rows with ROW_NUMBER and COUNT(*) OVER (), then average the middle one or two rows.`],
+['Python','algorithms,problems','Two Sum','Given a list of ints nums and a target, return the indices of two numbers that add up to target.',`def two_sum(nums, target):
+    seen = {}                      # value -> index
+    for i, n in enumerate(nums):
+        if target - n in seen:
+            return [seen[target - n], i]
+        seen[n] = i
+
+# O(n) time, O(n) space. The brute-force double loop is O(n^2).`],
+['Python','strings,problems','Valid palindrome','Return True if a string reads the same forwards and backwards, ignoring case and non-alphanumeric characters.',`def is_palindrome(s):
+    t = [c.lower() for c in s if c.isalnum()]
+    return t == t[::-1]
+
+# O(n). A two-pointer version uses O(1) extra space.`],
+['Python','python basics,problems','FizzBuzz','Print 1 to n. For multiples of 3 print Fizz, of 5 print Buzz, of both print FizzBuzz.',`def fizzbuzz(n):
+    for i in range(1, n + 1):
+        if i % 15 == 0:
+            print('FizzBuzz')
+        elif i % 3 == 0:
+            print('Fizz')
+        elif i % 5 == 0:
+            print('Buzz')
+        else:
+            print(i)
+
+# Check the combined case (15) first.`],
+['Python','data structures,problems','Word frequency','Given a string, return how often each word appears (case-insensitive).',`from collections import Counter
+
+def word_freq(text):
+    return Counter(text.lower().split())
+
+# Without Counter:
+# d = {}
+# for w in text.lower().split():
+#     d[w] = d.get(w, 0) + 1`],
+['Python','strings,problems','First non-repeating character','Return the first character in a string that appears only once, or None.',`from collections import Counter
+
+def first_unique(s):
+    counts = Counter(s)
+    for ch in s:
+        if counts[ch] == 1:
+            return ch
+    return None
+
+# Two passes, O(n).`],
+['Python','data structures,problems','Remove duplicates, keep order','Remove duplicates from a list while preserving the original order.',`def dedupe(lst):
+    seen = set()
+    out = []
+    for x in lst:
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
+
+# Shortcut for hashable items: list(dict.fromkeys(lst))`],
+['Python','algorithms,problems','Merge two sorted lists','Merge two sorted lists into one sorted list in O(n + m).',`def merge(a, b):
+    i = j = 0
+    out = []
+    while i < len(a) and j < len(b):
+        if a[i] <= b[j]:
+            out.append(a[i]); i += 1
+        else:
+            out.append(b[j]); j += 1
+    return out + a[i:] + b[j:]`],
+['Python','functions,algorithms','Fibonacci with memoization','Write fib(n) that stays fast for n = 100.',`from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fib(n):
+    return n if n < 2 else fib(n - 1) + fib(n - 2)
+
+# Without caching the recursion is O(2^n); with it, O(n).`],
+['Python','algorithms,problems','Maximum subarray sum','Given a list of ints, return the largest sum of any contiguous subarray.',`def max_subarray(nums):
+    best = cur = nums[0]
+    for n in nums[1:]:
+        cur = max(n, cur + n)      # extend or restart
+        best = max(best, cur)
+    return best
+
+# Kadane's algorithm: O(n) time, O(1) space.`],
+['Python','data structures,problems','Balanced brackets','Given a string of ()[]{} characters, return True if the brackets are balanced.',`def balanced(s):
+    pairs = {')': '(', ']': '[', '}': '{'}
+    stack = []
+    for ch in s:
+        if ch in '([{':
+            stack.append(ch)
+        elif ch in pairs:
+            if not stack or stack.pop() != pairs[ch]:
+                return False
+    return not stack
+
+# A stack gives last-opened, first-closed order.`],
+['Python','generators,problems','Chunk a list','Write a generator chunks(lst, n) that yields successive pieces of size n.',`def chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+list(chunks([1,2,3,4,5], 2))   # [[1,2],[3,4],[5]]`],
+['Python','pandas,problems','Top 3 customers by spend','DataFrame orders has customer_id and amount.\nReturn the 3 customers with the highest total amount.',`top3 = (orders.groupby('customer_id')['amount']
+              .sum()
+              .nlargest(3))
+
+# Add .reset_index() for a regular DataFrame.`],
+['Python','pandas,problems','Fill missing age by group median','DataFrame df has columns city and age (some age values are NaN).\nFill each missing age with the median age of its city.',`df['age'] = df['age'].fillna(
+    df.groupby('city')['age'].transform('median')
+)
+
+# transform returns a Series aligned to df, so fillna matches row by row.`],
+['Python','pandas,joins','Left merge and find unmatched','DataFrames customers(id, name) and orders(customer_id, amount).\nFind customers with no orders.',`m = customers.merge(orders, left_on='id', right_on='customer_id',
+                    how='left', indicator=True)
+no_orders = m[m['_merge'] == 'left_only'][['id', 'name']]
+
+# Same idea as a SQL anti-join.`]
+];
+S.probs=S.probs||[];S.att=S.att||{};
+if(!S.pv){PROBS.forEach(([subj,tags,title,prompt,sol],i)=>S.probs.push({id:'p'+i,subj,tags:tags.split(','),title,prompt,sol}));S.pv=1;save();}
+let pf={subj:'All',tag:'',lv:'All'},cur=null,adding=false;
+const pl=()=>S.probs.filter(p=>(pf.subj==='All'||p.subj===pf.subj)&&(pf.lv==='All'||p.lv===pf.lv)&&(!pf.tag||p.tags.includes(pf.tag)));
+function vProb(){
+ if(adding)return vPAdd();
+ if(cur)return vPDetail();
+ const tags=[...new Set(S.probs.flatMap(p=>p.tags))].sort(),list=pl();
+ $('#app').innerHTML=`<div class="card"><div class="grid"><div><label>Subject</label><select id="ps">${['All','SQL','Python'].map(s=>`<option ${pf.subj===s?'selected':''}>${s}</option>`).join('')}</select></div>
+ <div><label>Topic</label><select id="pt"><option value="">All topics</option>${tags.map(t=>`<option ${pf.tag===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div></div>
+ <label>Level</label><select id="plv">${lvOpts(pf.lv,1)}</select>
+ <div class="row" style="margin-top:12px"><span class="mute">${list.length} problem${list.length===1?'':'s'}</span><button class="btn" id="pa" style="margin-left:auto">Add problem</button></div></div>
+ ${list.map(p=>`<div class="card qi ${p.subj}" style="cursor:pointer" tabindex="0" role="button" data-o="${p.id}"><div class="row"><span class="subj ${p.subj}">${p.subj}</span>${lvB(p.lv)}${p.tags.map(tagHtml).join('')}${starB(p.id)}${pStat(p.id)}</div><div class="qtext" style="font-size:18px;margin-bottom:0">${esc(p.title)}</div></div>`).join('')||'<div class="card mute">No problems match. Try another filter.</div>'}`;
+ $('#ps').onchange=e=>{pf.subj=e.target.value;vProb()};$('#pt').onchange=e=>{pf.tag=e.target.value;vProb()};$('#plv').onchange=e=>{pf.lv=e.target.value;vProb()};
+ $('#pa').onclick=()=>{adding=true;vProb()};
+ document.querySelectorAll('[data-o]').forEach(c=>{const go=()=>{cur=c.dataset.o;vProb()};c.onclick=go;c.onkeydown=e=>{if(e.key==='Enter')go()}});
+}
+function vPDetail(){
+ const p=S.probs.find(x=>x.id===cur);if(!p){cur=null;return vProb()}
+ $('#app').innerHTML=`<div class="card"><div class="row"><button class="btn alt" id="bk">Back to problems</button><span class="subj ${p.subj}">${p.subj}</span>${lvB(p.lv)}${p.tags.map(tagHtml).join('')}${starB(p.id)}</div>
+ <div class="qtext">${esc(p.title)}</div><div class="prompt">${esc(p.prompt)}</div>
+ <label>Your answer</label><textarea class="code" id="ans" spellcheck="false" placeholder="Write your ${p.subj==='SQL'?'query':'code'} here">${esc(S.att[p.id]||'')}</textarea>
+ <p id="er" style="color:var(--bad);font-weight:700;margin:6px 0"></p>
+ <div class="row"><button class="btn" id="sh">Show solution</button>${p.subj==='SQL'?'<button class="btn alt" id="lb">Try it in SQL Lab</button>':''}</div><div id="so"></div></div>`;
+ $('#bk').onclick=()=>{cur=null;vProb()};
+ if($('#lb'))$('#lb').onclick=()=>{labQ=$('#ans').value.trim()||'-- Write your query here';tab='lab';render()};
+ $('#sh').onclick=()=>{
+  const a=$('#ans').value.trim();
+  if(!a){$('#er').textContent='Type your attempt first, even a rough one.';return}
+  $('#er').textContent='';S.att[p.id]=a;save();
+  $('#so').innerHTML=`<div class="sol"><b>Solution</b><pre class="code">${esc(p.sol)}</pre>
+  <label>Your notes</label><textarea id="pn" placeholder="What did you miss or want to remember?">${esc(p.note||'')}</textarea>
+  <div class="row" style="margin-top:12px"><button class="btn" id="gt">I got it</button><button class="btn del" id="ms">I missed it</button><button class="btn alt" id="nx">Next problem</button><span id="mk" class="mute"></span></div></div>`;
+  $('#pn').onchange=e=>{p.note=e.target.value;save()};
+  let marked=0;const mark=ok=>{const s=S.pst[p.id]||{a:0,c:0,w:0};if(!marked){s.a++;if(ok)s.c++;srUpd(s,ok);logDay()}else{s.last=ok?1:0;if(!ok){s.box=0;s.due=Date.now()+864e5}}marked=1;S.pst[p.id]=s;save();$('#mk').textContent=ok?'Marked as got it':'Saved to Review';nav()};
+  $('#gt').onclick=()=>mark(true);$('#ms').onclick=()=>mark(false);
+  $('#nx').onclick=()=>{p.note=$('#pn').value;save();const l=pl(),i=l.findIndex(x=>x.id===p.id);cur=l.length?l[(i+1)%l.length].id:null;vProb()};
+  $('#so').scrollIntoView({behavior:'smooth',block:'nearest'});
+ };
+}
+function vPAdd(){
+ $('#app').innerHTML=`<div class="card"><h2>Add a problem</h2>
+ <label>Subject</label><select id="as"><option>SQL</option><option>Python</option></select>
+ <label>Level</label><select id="alv">${lvOpts('B')}</select>
+ <label>Title</label><input id="at">
+ <label>Problem statement</label><textarea id="ap"></textarea>
+ <label>Solution</label><textarea class="code" id="asol"></textarea>
+ <label>Tags (comma separated)</label><input id="ag" placeholder="joins, window functions">
+ <p id="er" style="color:var(--bad);font-weight:700"></p>
+ <div class="row"><button class="btn" id="sv">Save problem</button><button class="btn alt" id="cn">Cancel</button></div></div>`;
+ $('#cn').onclick=()=>{adding=false;vProb()};
+ $('#sv').onclick=()=>{
+  const t=$('#at').value.trim(),p=$('#ap').value.trim(),s=$('#asol').value.trim();
+  if(!t||!p||!s){$('#er').textContent='Enter a title, the problem and the solution.';return}
+  S.probs.push({id:'pu'+Date.now(),subj:$('#as').value,title:t,prompt:p,sol:s,lv:$('#alv').value,tags:parse($('#ag').value)});
+  save();adding=false;vProb();
+ };
+}
+// ---------- Levels + 200 more problems ----------
+const LVN={B:'Basic',I:'Intermediate',A:'Advanced'},LVC={All:'var(--p)',B:'#16a34a',I:'#f97316',A:'#e11d48'};
+const lvB=l=>`<span class="lv ${l||'B'}">${LVN[l||'B']}</span>`;
+const lvOpts=(c,all)=>(all?[['All','All levels']]:[]).concat([['B','Basic'],['I','Intermediate'],['A','Advanced']]).map(([k,l])=>`<option value="${k}" ${c===k?'selected':''}>${l}</option>`).join('');
+if(!S.lv3){
+ const TH=[[10,0],[5,5],[4,5],[2,5],[2,5],[6,4],[2,4],[4,3],[6,4],[2,3],[2,4],[12,0],[8,0],[6,5],[3,2],[3,4],[3,5],[2,3],[5,3],[4,5],[2,4],[0,2]];
+ S.qs.forEach(q=>{if(q.lv)return;const m=/^b(\d+)_(\d+)$/.exec(q.id);
+  if(m){const [b,i]=TH[+m[1]]||[99,0],n=+m[2];q.lv=n<b?'B':n<b+i?'I':'A'}
+  else{const s=/^s(\d+)$/.exec(q.id);q.lv=s?('BIIBBIBBBBII'[+s[1]]||'B'):'B'}});
+ const pv='IBBIIAIIBIAAIBBBBBIIAIIIII';
+ S.probs.forEach(p=>{if(!p.lv){const m=/^p(\d+)$/.exec(p.id);p.lv=m?(pv[+m[1]]||'I'):'I'}});
+ S.lv3=1;save();
+}
+// Line format: level (B/I/A)|title|problem|solution   (~ = new line in solution)
+const NP=[
+['SQL','sql basics,filtering',`B|Highly paid employees|employees(id,name,salary,dept_id). List name and salary of employees earning over 50000, highest first.|SELECT name, salary FROM employees WHERE salary > 50000 ORDER BY salary DESC;
+B|Names starting with A|customers(id,name,city). Customers whose name starts with A.|SELECT * FROM customers WHERE name LIKE 'A%';
+B|Customers in chosen cities|customers(id,name,city). Customers in Pune, Delhi or Mumbai.|SELECT * FROM customers WHERE city IN ('Pune','Delhi','Mumbai');
+B|Salary range|employees. Employees earning between 40000 and 60000 inclusive.|SELECT * FROM employees WHERE salary BETWEEN 40000 AND 60000;
+B|Distinct cities|customers. List each city once.|SELECT DISTINCT city FROM customers;
+B|Five priciest products|products(id,name,price). Top 5 by price.|SELECT * FROM products ORDER BY price DESC LIMIT 5;
+B|No manager|employees(id,name,manager_id). Employees without a manager.|SELECT * FROM employees WHERE manager_id IS NULL;
+B|Orders in March 2024|orders(id,order_date,amount). Orders placed in March 2024.|SELECT * FROM orders WHERE order_date >= '2024-03-01' AND order_date < '2024-04-01';~-- A half-open range works for dates and timestamps and can use an index.
+B|Count all orders|orders. How many orders exist?|SELECT COUNT(*) FROM orders;
+B|Alias and arithmetic|employees. Show name as employee_name and annual salary (salary x 12).|SELECT name AS employee_name, salary * 12 AS annual_salary FROM employees;
+I|Salary bands|employees. Label each salary High (above 80000), Medium (40000 to 80000) or Low.|SELECT name, CASE WHEN salary > 80000 THEN 'High' WHEN salary >= 40000 THEN 'Medium' ELSE 'Low' END AS band FROM employees;
+B|Exclude a city|customers. Customers not in Delhi, including those with no city.|SELECT * FROM customers WHERE city <> 'Delhi' OR city IS NULL;~-- city <> 'Delhi' alone would drop NULL cities.`],
+['SQL','joins',`B|Employees with department|employees(id,name,dept_id), departments(id,name). Show each employee with their department name.|SELECT e.name, d.name AS dept FROM employees e JOIN departments d ON d.id = e.dept_id;
+B|Include employees without a department|Same tables. Keep employees that have no department.|SELECT e.name, d.name AS dept FROM employees e LEFT JOIN departments d ON d.id = e.dept_id;
+B|Departments with no employees|Same tables. Departments that have no employees.|SELECT d.name FROM departments d LEFT JOIN employees e ON e.dept_id = d.id WHERE e.id IS NULL;
+B|Orders with customer names|orders(id,customer_id,amount), customers(id,name). List order id, customer name and amount.|SELECT o.id, c.name, o.amount FROM orders o JOIN customers c ON c.id = o.customer_id;
+I|Total spent per customer|Same tables. Total spent per customer, highest first, including customers with no orders.|SELECT c.name, COALESCE(SUM(o.amount), 0) AS total FROM customers c LEFT JOIN orders o ON o.customer_id = c.id GROUP BY c.id, c.name ORDER BY total DESC;
+I|Units sold per product|order_items(order_id,product_id,qty), products(id,name). Units sold per product name.|SELECT p.name, SUM(oi.qty) AS sold FROM order_items oi JOIN products p ON p.id = oi.product_id GROUP BY p.name;
+I|Employee and manager names|employees(id,name,manager_id). Each employee with their manager's name (NULL if none).|SELECT e.name, m.name AS manager FROM employees e LEFT JOIN employees m ON m.id = e.manager_id;
+I|Products never ordered|products(id,name), order_items(product_id). Products that were never ordered.|SELECT p.* FROM products p LEFT JOIN order_items oi ON oi.product_id = p.id WHERE oi.product_id IS NULL;
+I|Customer pairs in same city|customers(id,name,city). All pairs of customers in the same city, each pair once.|SELECT a.name, b.name FROM customers a JOIN customers b ON a.city = b.city AND a.id < b.id;
+I|Colleagues of Ravi|employees(id,name,dept_id). Everyone in the same department as Ravi.|SELECT e.name FROM employees e JOIN employees r ON r.dept_id = e.dept_id WHERE r.name = 'Ravi' AND e.id <> r.id;
+I|2024 orders per customer|customers, orders(order_date). Show every customer with only their 2024 orders.|SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.order_date >= '2024-01-01' AND o.order_date < '2025-01-01';~-- The date filter lives in ON; in WHERE it would remove customers with no 2024 orders.
+A|Customers who bought every product|customers, orders(customer_id), order_items(order_id,product_id), products. Customers who bought all products.|SELECT o.customer_id FROM orders o JOIN order_items oi ON oi.order_id = o.id GROUP BY o.customer_id HAVING COUNT(DISTINCT oi.product_id) = (SELECT COUNT(*) FROM products);~-- Relational division by counting distinct matches.
+A|In one table but not both|Tables a(id) and b(id). Ids that appear in exactly one of the two tables.|SELECT COALESCE(a.id, b.id) AS id FROM a FULL JOIN b ON a.id = b.id WHERE a.id IS NULL OR b.id IS NULL;
+A|All size and colour combinations|Tables sizes(size), colors(color). Every combination.|SELECT s.size, c.color FROM sizes s CROSS JOIN colors c;`],
+['SQL','aggregation',`B|Average salary|employees. Overall average salary.|SELECT AVG(salary) FROM employees;
+B|Headcount per department|employees(dept_id). Employees per department.|SELECT dept_id, COUNT(*) FROM employees GROUP BY dept_id;
+B|Max price per category|products(category,price). Highest price per category.|SELECT category, MAX(price) FROM products GROUP BY category;
+B|Total sales|orders(amount). Sum of all order amounts.|SELECT SUM(amount) FROM orders;
+I|Categories with high average price|products. Categories whose average price exceeds 500.|SELECT category, AVG(price) FROM products GROUP BY category HAVING AVG(price) > 500;
+I|Repeat buyers|orders(customer_id). Customers with 2 or more orders.|SELECT customer_id, COUNT(*) FROM orders GROUP BY customer_id HAVING COUNT(*) >= 2;
+I|Revenue per month|orders(order_date,amount). Revenue by month.|SELECT DATE_TRUNC('month', order_date) AS m, SUM(amount) FROM orders GROUP BY 1 ORDER BY 1;
+I|Departments above company average|employees. Departments whose average salary is above the company average.|SELECT dept_id FROM employees GROUP BY dept_id HAVING AVG(salary) > (SELECT AVG(salary) FROM employees);
+I|Unique customers per day|orders. Number of distinct customers per day.|SELECT order_date, COUNT(DISTINCT customer_id) FROM orders GROUP BY order_date;
+I|Percent cancelled|orders(status). Percentage of orders that are cancelled.|SELECT 100.0 * SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) / COUNT(*) AS pct FROM orders;
+I|First and last order|orders. First and last order date per customer.|SELECT customer_id, MIN(order_date), MAX(order_date) FROM orders GROUP BY customer_id;
+A|Subtotals with ROLLUP|sales(region,product,amount). Totals per region and product, with subtotals and a grand total.|SELECT region, product, SUM(amount) FROM sales GROUP BY ROLLUP (region, product);
+A|Counts by status per customer|orders(customer_id,status). One row per customer with completed and cancelled counts.|SELECT customer_id, COUNT(*) FILTER (WHERE status = 'completed') AS done, COUNT(*) FILTER (WHERE status = 'cancelled') AS cancelled FROM orders GROUP BY customer_id;~-- Portable: SUM(CASE WHEN ... THEN 1 ELSE 0 END)
+A|Most frequent amount|orders(amount). The most common order amount.|SELECT amount FROM orders GROUP BY amount ORDER BY COUNT(*) DESC LIMIT 1;`],
+['SQL','window functions',`I|Company salary rank|employees. Rank everyone by salary, highest first (ties share a rank).|SELECT name, salary, RANK() OVER (ORDER BY salary DESC) AS rnk FROM employees;
+I|Rank within department|employees. Rank salary within each department.|SELECT name, dept_id, salary, DENSE_RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rnk FROM employees;
+I|Highest paid per department|employees. The top earner in each department.|WITH r AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn FROM employees) SELECT * FROM r WHERE rn = 1;
+I|Salary next to department average|employees. Each salary with its department average.|SELECT name, salary, AVG(salary) OVER (PARTITION BY dept_id) AS dept_avg FROM employees;
+I|Previous order amount|orders(customer_id,order_date,amount). Each order with the same customer's previous amount.|SELECT *, LAG(amount) OVER (PARTITION BY customer_id ORDER BY order_date) AS prev_amount FROM orders;
+I|Next order date|orders. Each order with the customer's next order date.|SELECT *, LEAD(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS next_date FROM orders;
+I|Cumulative revenue|orders. Running total of amount by date.|SELECT order_date, amount, SUM(amount) OVER (ORDER BY order_date) AS cum FROM orders;
+A|3-order moving average|orders. Moving average of amount over the current and previous 2 orders per customer.|SELECT *, AVG(amount) OVER (PARTITION BY customer_id ORDER BY order_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS ma FROM orders;
+A|Share of customer total|orders. Each order as a percent of its customer's total.|SELECT *, 100.0 * amount / SUM(amount) OVER (PARTITION BY customer_id) AS pct FROM orders;
+A|Salary quartiles|employees. Assign each employee to a salary quartile.|SELECT name, NTILE(4) OVER (ORDER BY salary) AS quartile FROM employees;
+A|First order per customer|orders. Each customer's first order row.|WITH r AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date) rn FROM orders) SELECT * FROM r WHERE rn = 1;
+A|Days between orders|orders. Days since the customer's previous order.|SELECT *, order_date - LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS gap_days FROM orders;
+A|Year-over-year growth|sales(year,revenue). Revenue change versus the previous year.|SELECT year, revenue, revenue - LAG(revenue) OVER (ORDER BY year) AS change FROM sales;
+A|Top 10 percent spenders|orders. Customers in the top 10 percent by total spend.|WITH t AS (SELECT customer_id, SUM(amount) s FROM orders GROUP BY customer_id), r AS (SELECT *, NTILE(10) OVER (ORDER BY s DESC) AS b FROM t) SELECT customer_id FROM r WHERE b = 1;`],
+['SQL','subqueries,cte',`B|Customers who ordered|customers, orders. Customers who placed at least one order, using IN.|SELECT * FROM customers WHERE id IN (SELECT customer_id FROM orders);
+I|Above-average salaries|employees. Employees earning more than the company average.|SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);
+I|Customers with large orders|customers, orders. Customers who have an order over 1000, using EXISTS.|SELECT * FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id AND o.amount > 1000);
+I|Above category average|products(category,price). Products priced above their category average.|SELECT * FROM products p WHERE price > (SELECT AVG(price) FROM products WHERE category = p.category);
+I|Sales or HR staff|employees, departments. Employees in departments named Sales or HR.|SELECT * FROM employees WHERE dept_id IN (SELECT id FROM departments WHERE name IN ('Sales','HR'));
+I|Latest order per customer|orders. Each customer's most recent order.|SELECT * FROM orders o WHERE order_date = (SELECT MAX(order_date) FROM orders WHERE customer_id = o.customer_id);
+I|Months above average revenue|orders. Months whose revenue is above the monthly average.|WITH m AS (SELECT DATE_TRUNC('month', order_date) AS mon, SUM(amount) AS rev FROM orders GROUP BY 1) SELECT * FROM m WHERE rev > (SELECT AVG(rev) FROM m);
+I|Third highest salary|employees. The third highest distinct salary.|SELECT DISTINCT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 2;
+A|Org chart depth|employees(id,name,manager_id). Show each employee with their depth below the CEO.|WITH RECURSIVE t AS (SELECT id, name, 0 AS depth FROM employees WHERE manager_id IS NULL UNION ALL SELECT e.id, e.name, t.depth + 1 FROM employees e JOIN t ON e.manager_id = t.id) SELECT * FROM t;
+A|Numbers 1 to 10|Generate the numbers 1 to 10 without a table.|WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n WHERE x < 10) SELECT x FROM n;
+A|Everyone under manager 1|employees. All direct and indirect reports of employee 1.|WITH RECURSIVE r AS (SELECT id FROM employees WHERE manager_id = 1 UNION ALL SELECT e.id FROM employees e JOIN r ON e.manager_id = r.id) SELECT * FROM r;
+A|Customers above average total|orders. Customers whose total spend exceeds the average customer total.|WITH t AS (SELECT customer_id, SUM(amount) s FROM orders GROUP BY customer_id) SELECT * FROM t WHERE s > (SELECT AVG(s) FROM t);`],
+['SQL','dates,strings,case',`B|Order year|orders(order_date). Show each order id with its year.|SELECT id, EXTRACT(YEAR FROM order_date) AS yr FROM orders;
+B|Uppercase names|customers. Names in uppercase.|SELECT UPPER(name) FROM customers;
+B|Full name|users(first_name,last_name). Full name column.|SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM users;
+I|First three letters|customers. First 3 letters of each name.|SELECT SUBSTRING(name, 1, 3) FROM customers;
+I|Email domain|users(email). The part after @.|SELECT SUBSTRING(email FROM POSITION('@' IN email) + 1) AS domain FROM users;
+I|Age in years|users(birth_date). Age in whole years.|SELECT DATE_PART('year', AGE(CURRENT_DATE, birth_date)) AS age FROM users;
+I|Last 30 days|orders. Orders from the last 30 days.|SELECT * FROM orders WHERE order_date >= CURRENT_DATE - INTERVAL '30 days';
+I|Sales by weekday|orders. Revenue per day of week.|SELECT EXTRACT(DOW FROM order_date) AS dow, SUM(amount) FROM orders GROUP BY 1 ORDER BY 1;
+I|Clean up names|customers. Trim spaces and capitalise names.|SELECT INITCAP(TRIM(name)) FROM customers;
+A|Weekly revenue|orders. Revenue per week, newest first.|SELECT DATE_TRUNC('week', order_date) AS wk, SUM(amount) FROM orders GROUP BY 1 ORDER BY 1 DESC;`],
+['SQL','dml,ddl',`B|Insert a row|Add a customer named Asha in Pune.|INSERT INTO customers (name, city) VALUES ('Asha', 'Pune');
+B|Update salaries|Give everyone in department 3 a 10 percent raise.|UPDATE employees SET salary = salary * 1.10 WHERE dept_id = 3;
+B|Delete old orders|Delete orders before 2020.|DELETE FROM orders WHERE order_date < '2020-01-01';
+B|Create a table|Create products(id, name, price) with id as primary key and price must be positive.|CREATE TABLE products (id INT PRIMARY KEY, name VARCHAR(100) NOT NULL, price NUMERIC(10,2) CHECK (price > 0));
+B|Add a column|Add a nullable email column to customers.|ALTER TABLE customers ADD COLUMN email VARCHAR(255);
+I|Create an index|Speed up lookups of orders by customer then date.|CREATE INDEX idx_orders_cust_date ON orders (customer_id, order_date);
+I|Update using a join|Set each order's city from its customer's city.|UPDATE orders o SET city = c.city FROM customers c WHERE c.id = o.customer_id;~-- MySQL: UPDATE orders o JOIN customers c ON c.id = o.customer_id SET o.city = c.city;
+A|Upsert|Insert a product or update its price if the id already exists.|INSERT INTO products (id, name, price) VALUES (1, 'Pen', 5) ON CONFLICT (id) DO UPDATE SET price = EXCLUDED.price;~-- MySQL: ON DUPLICATE KEY UPDATE`],
+['SQL','advanced,analytics',`A|Day-1 retention|logins(user_id,login_date). Share of users who log in the day after their first login.|WITH f AS (SELECT user_id, MIN(login_date) d FROM logins GROUP BY user_id) SELECT AVG(CASE WHEN l.user_id IS NOT NULL THEN 1.0 ELSE 0 END) FROM f LEFT JOIN logins l ON l.user_id = f.user_id AND l.login_date = f.d + 1;
+A|Longest login streak|logins(user_id,login_date). Longest run of consecutive days per user.|WITH d AS (SELECT DISTINCT user_id, login_date FROM logins), g AS (SELECT user_id, login_date - (ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY login_date))::int AS grp FROM d) SELECT user_id, MAX(c) FROM (SELECT user_id, COUNT(*) c FROM g GROUP BY user_id, grp) s GROUP BY user_id;
+A|Top N with ties|employees. Employees whose salary is in the top 3 distinct salaries.|SELECT * FROM employees WHERE salary IN (SELECT DISTINCT salary FROM employees ORDER BY salary DESC LIMIT 3);
+A|Find missing ids|items(id). Find gaps in a sequence of ids.|SELECT id + 1 AS gap_start FROM items i WHERE NOT EXISTS (SELECT 1 FROM items n WHERE n.id = i.id + 1) AND id < (SELECT MAX(id) FROM items);
+A|Signup cohorts|customers(id,signup_date), orders(customer_id,order_date). Orders per signup month cohort.|SELECT DATE_TRUNC('month', c.signup_date) AS cohort, COUNT(o.customer_id) AS orders FROM customers c LEFT JOIN orders o ON o.customer_id = c.id GROUP BY 1 ORDER BY 1;
+A|Sessionise events|events(user_id,ts). Start a new session after 30 minutes of inactivity and number sessions per user.|WITH x AS (SELECT *, CASE WHEN ts - LAG(ts) OVER (PARTITION BY user_id ORDER BY ts) > INTERVAL '30 minutes' THEN 1 ELSE 0 END AS new_s FROM events) SELECT *, SUM(new_s) OVER (PARTITION BY user_id ORDER BY ts) AS session_no FROM x;
+A|Median per department|employees. Median salary per department.|SELECT dept_id, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY salary) FROM employees GROUP BY dept_id;
+A|Keep latest duplicate|users(id,email,updated_at). Delete duplicate emails, keeping the most recently updated row.|DELETE FROM users WHERE id IN (SELECT id FROM (SELECT id, ROW_NUMBER() OVER (PARTITION BY email ORDER BY updated_at DESC) rn FROM users) t WHERE rn > 1);
+A|Three in a row|nums(id,num). Numbers that appear at least 3 times consecutively.|SELECT DISTINCT a.num FROM nums a JOIN nums b ON b.id = a.id + 1 AND b.num = a.num JOIN nums c ON c.id = a.id + 2 AND c.num = a.num;
+A|Second highest per department|employees. The second highest salary in each department.|WITH r AS (SELECT dept_id, salary, DENSE_RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) rk FROM employees) SELECT DISTINCT dept_id, salary FROM r WHERE rk = 2;
+A|Safer NOT IN|Rewrite customers NOT IN (SELECT customer_id FROM orders) safely when customer_id can be NULL.|SELECT * FROM customers c WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);~-- NOT IN returns nothing if the subquery contains a NULL.
+I|Choose an index|Query: WHERE customer_id = ? ORDER BY order_date. Which index fits?|CREATE INDEX ON orders (customer_id, order_date);~-- Equality column first, sort column second: filter and order from one index.
+A|Make a filter index-friendly|Rewrite WHERE DATE(created_at) = '2024-03-01' so an index on created_at can be used.|WHERE created_at >= '2024-03-01' AND created_at < '2024-03-02'~-- A function on the column blocks normal index use; compare the raw column to a range.
+A|Swap adjacent seats|seats(id,student). Swap the students of every two consecutive ids, leaving an odd last row.|SELECT id, CASE WHEN id % 2 = 1 AND id = (SELECT MAX(id) FROM seats) THEN student WHEN id % 2 = 1 THEN LEAD(student) OVER (ORDER BY id) ELSE LAG(student) OVER (ORDER BY id) END AS student FROM seats ORDER BY id;
+A|Pivot with window ranking|scores(student,subject,marks). Each student's best subject.|SELECT student, subject FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY student ORDER BY marks DESC) rn FROM scores) t WHERE rn = 1;
+A|Running distinct count|visits(day,user_id). Number of users seen for the first time each day.|SELECT first_day, COUNT(*) FROM (SELECT user_id, MIN(day) AS first_day FROM visits GROUP BY user_id) t GROUP BY first_day ORDER BY first_day;`],
+['Python','python basics',`B|Sum 1 to n|Return the sum of 1 to n without a loop.|def total(n):~    return n * (n + 1) // 2
+B|Even or odd|Return 'even' or 'odd' for an integer.|def parity(n):~    return 'even' if n % 2 == 0 else 'odd'
+B|Swap two values|Swap a and b without a temp variable.|a, b = b, a
+B|Largest of three|Return the largest of three numbers without sorting.|def largest(a, b, c):~    return max(a, b, c)
+B|Count vowels|Count vowels in a string.|def vowels(s):~    return sum(ch in 'aeiou' for ch in s.lower())
+B|Factorial|Return n! iteratively.|def fact(n):~    r = 1~    for i in range(2, n + 1):~        r *= i~    return r
+B|Prime check|Return True if n is prime.|def is_prime(n):~    if n < 2:~        return False~    for i in range(2, int(n ** 0.5) + 1):~        if n % i == 0:~            return False~    return True~# Only test up to sqrt(n).
+B|Leap year|Return True if a year is a leap year.|def leap(y):~    return y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)
+B|Celsius to Fahrenheit|Convert a list of Celsius values.|def to_f(cs):~    return [c * 9 / 5 + 32 for c in cs]
+B|Sum of digits|Return the sum of the digits of an integer.|def digit_sum(n):~    return sum(int(d) for d in str(abs(n)))`],
+['Python','strings',`B|Reverse words|Reverse the order of words in a sentence.|def rev_words(s):~    return ' '.join(s.split()[::-1])
+B|Title case|Capitalise the first letter of each word.|s.title()~# or ' '.join(w.capitalize() for w in s.split())
+I|Longest word|Return the longest word in a sentence.|def longest(s):~    return max(s.split(), key=len)
+I|String rotation|Check whether b is a rotation of a.|def is_rotation(a, b):~    return len(a) == len(b) and b in a + a
+I|Run-length encode|Compress 'aabccc' to 'a2b1c3'.|def rle(s):~    out, i = [], 0~    while i < len(s):~        j = i~        while j < len(s) and s[j] == s[i]:~            j += 1~        out.append(s[i] + str(j - i))~        i = j~    return ''.join(out)
+B|Character counts|Count how many times each character appears.|from collections import Counter~Counter(s)
+I|Remove vowels|Return the string without vowels.|def no_vowels(s):~    return ''.join(c for c in s if c.lower() not in 'aeiou')
+I|Caesar cipher|Shift lowercase letters by k.|def caesar(s, k):~    return ''.join(chr((ord(c) - 97 + k) % 26 + 97) if c.islower() else c for c in s)
+I|Longest common prefix|Longest common prefix of a list of strings.|def lcp(words):~    p = words[0]~    for w in words[1:]:~        while not w.startswith(p):~            p = p[:-1]~    return p
+A|Longest palindromic substring|Return the longest palindromic substring.|def longest_pal(s):~    best = ''~    for c in range(len(s)):~        for l, r in ((c, c), (c, c + 1)):~            while l >= 0 and r < len(s) and s[l] == s[r]:~                l -= 1; r += 1~            if r - l - 1 > len(best):~                best = s[l + 1:r]~    return best~# Expand around each centre: O(n^2).`],
+['Python','data structures',`B|Second largest|Return the second largest distinct number.|def second(nums):~    return sorted(set(nums))[-2]
+B|Min and max in one pass|Find min and max without min() or max().|def mm(nums):~    lo = hi = nums[0]~    for n in nums:~        lo, hi = min(lo, n), max(hi, n)~    return lo, hi~# Plain comparisons also work.
+B|Remove all occurrences|Remove every occurrence of v from a list.|def remove_all(lst, v):~    return [x for x in lst if x != v]
+I|Rotate a list|Rotate a list right by k.|def rotate(lst, k):~    k %= len(lst)~    return lst[-k:] + lst[:-k]
+I|List intersection|Common elements of two lists.|sorted(set(a) & set(b))
+I|Group anagrams|Group words that are anagrams.|from collections import defaultdict~def group(words):~    g = defaultdict(list)~    for w in words:~        g[''.join(sorted(w))].append(w)~    return list(g.values())
+I|Invert a dict|Swap keys and values.|{v: k for k, v in d.items()}
+I|Merge counts|Merge two count dicts, summing values.|from collections import Counter~Counter(a) + Counter(b)
+I|Top k frequent|Return the k most frequent items.|from collections import Counter~def top_k(nums, k):~    return [x for x, _ in Counter(nums).most_common(k)]
+I|Lists to dict|Build a dict from keys and values lists.|dict(zip(keys, values))
+I|Sort dict by value|Sort a dict by value, descending.|dict(sorted(d.items(), key=lambda kv: kv[1], reverse=True))
+I|Missing number|List contains 1..n with one missing. Find it.|def missing(nums):~    n = len(nums) + 1~    return n * (n + 1) // 2 - sum(nums)
+A|Longest consecutive run|Length of the longest run of consecutive integers (unordered).|def longest_run(nums):~    s, best = set(nums), 0~    for n in s:~        if n - 1 not in s:~            m = n~            while m + 1 in s:~                m += 1~            best = max(best, m - n + 1)~    return best~# O(n): only start counting at run beginnings.
+A|Product except self|For each index, the product of all other items, without division.|def prod_except(nums):~    n = len(nums); out = [1] * n~    left = 1~    for i in range(n):~        out[i] = left; left *= nums[i]~    right = 1~    for i in range(n - 1, -1, -1):~        out[i] *= right; right *= nums[i]~    return out`],
+['Python','functions',`B|Default arguments|Write greet(name, greeting='Hello') returning a message.|def greet(name, greeting='Hello'):~    return f'{greeting}, {name}!'
+I|Flatten nested lists|Flatten arbitrarily nested lists.|def flatten(x):~    out = []~    for i in x:~        out.extend(flatten(i) if isinstance(i, list) else [i])~    return out
+I|Compose functions|Return a function equal to f(g(x)).|def compose(f, g):~    return lambda x: f(g(x))
+I|Manual memoize|Cache results of a one-argument function.|def memo(f):~    cache = {}~    def wrap(x):~        if x not in cache:~            cache[x] = f(x)~        return cache[x]~    return wrap
+B|Sort by second item|Sort a list of pairs by the second element.|sorted(pairs, key=lambda p: p[1])
+I|Variadic sum|Write add(*nums) returning their sum.|def add(*nums):~    return sum(nums)
+I|Partial application|Create double from multiply(a, b).|from functools import partial~double = partial(multiply, 2)
+A|Retry decorator|Retry a function up to n times when it raises.|import functools~def retry(n):~    def deco(f):~        @functools.wraps(f)~        def wrap(*a, **k):~            for i in range(n):~                try:~                    return f(*a, **k)~                except Exception:~                    if i == n - 1:~                        raise~        return wrap~    return deco`],
+['Python','oop',`B|Rectangle class|Class with width, height and an area() method.|class Rectangle:~    def __init__(self, w, h):~        self.w, self.h = w, h~    def area(self):~        return self.w * self.h
+B|Bank account|Account with deposit and a withdraw that rejects overdrafts.|class Account:~    def __init__(self, bal=0):~        self.bal = bal~    def deposit(self, x):~        self.bal += x~    def withdraw(self, x):~        if x > self.bal:~            raise ValueError('insufficient funds')~        self.bal -= x
+I|Animal inheritance|Dog and Cat inherit Animal and override speak().|class Animal:~    def speak(self):~        return '...'~class Dog(Animal):~    def speak(self):~        return 'Woof'~class Cat(Animal):~    def speak(self):~        return 'Meow'
+I|Point equality and printing|Point with __str__ and __eq__.|class Point:~    def __init__(self, x, y):~        self.x, self.y = x, y~    def __str__(self):~        return f'({self.x}, {self.y})'~    def __eq__(self, o):~        return (self.x, self.y) == (o.x, o.y)~    def __hash__(self):~        return hash((self.x, self.y))
+I|Stack class|Stack with push, pop, peek and is_empty.|class Stack:~    def __init__(self):~        self.items = []~    def push(self, x):~        self.items.append(x)~    def pop(self):~        return self.items.pop()~    def peek(self):~        return self.items[-1]~    def is_empty(self):~        return not self.items
+I|Queue from two stacks|Implement a queue using two lists.|class Queue:~    def __init__(self):~        self.a, self.b = [], []~    def push(self, x):~        self.a.append(x)~    def pop(self):~        if not self.b:~            while self.a:~                self.b.append(self.a.pop())~        return self.b.pop()
+A|Singleton|Make a class that only ever creates one instance.|class Singleton:~    _inst = None~    def __new__(cls):~        if cls._inst is None:~            cls._inst = super().__new__(cls)~        return cls._inst
+A|Context manager class|Timer usable in a with block.|import time~class Timer:~    def __enter__(self):~        self.t = time.time()~        return self~    def __exit__(self, *exc):~        self.elapsed = time.time() - self.t`],
+['Python','algorithms',`B|Linear search|Return the index of x in a list, or -1.|def find(lst, x):~    for i, v in enumerate(lst):~        if v == x:~            return i~    return -1
+B|Bubble sort|Sort a list with bubble sort.|def bubble(a):~    for i in range(len(a)):~        for j in range(len(a) - i - 1):~            if a[j] > a[j + 1]:~                a[j], a[j + 1] = a[j + 1], a[j]~    return a
+I|Binary search|Binary search in a sorted list.|def bsearch(a, x):~    lo, hi = 0, len(a) - 1~    while lo <= hi:~        mid = (lo + hi) // 2~        if a[mid] == x:~            return mid~        if a[mid] < x:~            lo = mid + 1~        else:~            hi = mid - 1~    return -1
+I|Insertion sort|Sort with insertion sort.|def insertion(a):~    for i in range(1, len(a)):~        k, j = a[i], i - 1~        while j >= 0 and a[j] > k:~            a[j + 1] = a[j]; j -= 1~        a[j + 1] = k~    return a
+I|Merge sort|Implement merge sort.|def msort(a):~    if len(a) < 2:~        return a~    m = len(a) // 2~    l, r = msort(a[:m]), msort(a[m:])~    out = []~    while l and r:~        out.append(l.pop(0) if l[0] <= r[0] else r.pop(0))~    return out + l + r
+I|Quick sort|Implement quick sort.|def qsort(a):~    if len(a) < 2:~        return a~    p = a[0]~    return qsort([x for x in a[1:] if x < p]) + [p] + qsort([x for x in a[1:] if x >= p])
+I|Reverse a linked list|Reverse a singly linked list.|def reverse(head):~    prev = None~    while head:~        head.next, prev, head = prev, head, head.next~    return prev
+I|Detect a cycle|Detect a cycle in a linked list.|def has_cycle(head):~    slow = fast = head~    while fast and fast.next:~        slow, fast = slow.next, fast.next.next~        if slow is fast:~            return True~    return False~# Floyd's tortoise and hare.
+I|Dedupe sorted list|Remove duplicates from a sorted list in place, return new length.|def dedupe(a):~    k = 0~    for x in a:~        if k == 0 or x != a[k - 1]:~            a[k] = x; k += 1~    return k
+I|Best window sum|Maximum sum of any k consecutive items.|def best_window(a, k):~    cur = best = sum(a[:k])~    for i in range(k, len(a)):~        cur += a[i] - a[i - k]~        best = max(best, cur)~    return best
+A|Longest unique substring|Length of the longest substring without repeats.|def longest_unique(s):~    seen, l, best = {}, 0, 0~    for r, c in enumerate(s):~        if c in seen and seen[c] >= l:~            l = seen[c] + 1~        seen[c] = r~        best = max(best, r - l + 1)~    return best
+A|Search rotated sorted array|Find x in a rotated sorted list in O(log n).|def search(a, x):~    lo, hi = 0, len(a) - 1~    while lo <= hi:~        m = (lo + hi) // 2~        if a[m] == x:~            return m~        if a[lo] <= a[m]:~            if a[lo] <= x < a[m]: hi = m - 1~            else: lo = m + 1~        else:~            if a[m] < x <= a[hi]: lo = m + 1~            else: hi = m - 1~    return -1
+A|Top k with a heap|k largest numbers using heapq.|import heapq~heapq.nlargest(k, nums)~# Or keep a min-heap of size k: O(n log k).
+A|Grid shortest path|Shortest path from (0,0) to the bottom-right of a grid of 0/1 (1 = wall) using BFS.|from collections import deque~def shortest(g):~    n, m = len(g), len(g[0])~    q, seen = deque([(0, 0, 1)]), {(0, 0)}~    while q:~        r, c, d = q.popleft()~        if (r, c) == (n - 1, m - 1):~            return d~        for dr, dc in ((1,0),(-1,0),(0,1),(0,-1)):~            nr, nc = r + dr, c + dc~            if 0 <= nr < n and 0 <= nc < m and g[nr][nc] == 0 and (nr, nc) not in seen:~                seen.add((nr, nc)); q.append((nr, nc, d + 1))~    return -1
+A|Merge intervals|Merge overlapping [start, end] intervals.|def merge(iv):~    out = []~    for s, e in sorted(iv):~        if out and s <= out[-1][1]:~            out[-1][1] = max(out[-1][1], e)~        else:~            out.append([s, e])~    return out`],
+['Python','recursion,dynamic programming',`I|Power set|Return all subsets of a list.|def subsets(a):~    if not a:~        return [[]]~    rest = subsets(a[1:])~    return rest + [[a[0]] + s for s in rest]
+I|Permutations|Return all permutations of a list.|def perms(a):~    if len(a) <= 1:~        return [a]~    return [[a[i]] + p for i in range(len(a)) for p in perms(a[:i] + a[i + 1:])]
+I|Climbing stairs|Ways to climb n steps taking 1 or 2 at a time.|def ways(n):~    a, b = 1, 1~    for _ in range(n - 1):~        a, b = b, a + b~    return b
+I|Coin change|Fewest coins to make an amount, or -1.|def coins(cs, amt):~    dp = [0] + [float('inf')] * amt~    for a in range(1, amt + 1):~        for c in cs:~            if c <= a:~                dp[a] = min(dp[a], dp[a - c] + 1)~    return -1 if dp[amt] == float('inf') else dp[amt]
+A|Longest common subsequence|Length of the LCS of two strings.|def lcs(a, b):~    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]~    for i in range(1, len(a) + 1):~        for j in range(1, len(b) + 1):~            dp[i][j] = dp[i-1][j-1] + 1 if a[i-1] == b[j-1] else max(dp[i-1][j], dp[i][j-1])~    return dp[-1][-1]
+A|0/1 knapsack|Maximum value within a weight limit, each item used once.|def knap(w, v, cap):~    dp = [0] * (cap + 1)~    for wi, vi in zip(w, v):~        for c in range(cap, wi - 1, -1):~            dp[c] = max(dp[c], dp[c - wi] + vi)~    return dp[cap]
+I|Fibonacci iterative|nth Fibonacci number in O(n) time and O(1) space.|def fib(n):~    a, b = 0, 1~    for _ in range(n):~        a, b = b, a + b~    return a
+A|Edit distance|Minimum edits to turn word a into word b.|def edit(a, b):~    dp = list(range(len(b) + 1))~    for i in range(1, len(a) + 1):~        prev, dp[0] = dp[0], i~        for j in range(1, len(b) + 1):~            cur = dp[j]~            dp[j] = prev if a[i-1] == b[j-1] else 1 + min(prev, dp[j], dp[j-1])~            prev = cur~    return dp[-1]`],
+['Python','generators,decorators',`I|Timer decorator|Print how long a function takes.|import time, functools~def timed(f):~    @functools.wraps(f)~    def wrap(*a, **k):~        t = time.time()~        r = f(*a, **k)~        print(f.__name__, time.time() - t)~        return r~    return wrap
+I|Prime generator|Yield primes forever.|def primes():~    n = 2~    while True:~        if all(n % p for p in range(2, int(n ** 0.5) + 1)):~            yield n~        n += 1
+I|Fibonacci generator|Yield Fibonacci numbers.|def fib():~    a, b = 0, 1~    while True:~        yield a~        a, b = b, a + b
+I|Read file in chunks|Yield a large file n lines at a time.|def chunks(path, n):~    buf = []~    with open(path) as f:~        for line in f:~            buf.append(line)~            if len(buf) == n:~                yield buf; buf = []~    if buf:~        yield buf
+I|Take first n|Take the first n items from any iterable.|from itertools import islice~list(islice(it, n))
+A|Decorator with arguments|Repeat a function n times.|def repeat(n):~    def deco(f):~        def wrap(*a, **k):~            for _ in range(n):~                r = f(*a, **k)~            return r~        return wrap~    return deco
+A|Custom iterator|Iterator that counts down from n to 1.|class Countdown:~    def __init__(self, n):~        self.n = n~    def __iter__(self):~        return self~    def __next__(self):~        if self.n <= 0:~            raise StopIteration~        self.n -= 1~        return self.n + 1
+A|Context manager function|Temporarily change directory using contextlib.|import os~from contextlib import contextmanager~@contextmanager~def cd(path):~    old = os.getcwd()~    os.chdir(path)~    try:~        yield~    finally:~        os.chdir(old)`],
+['Python','files,exceptions',`B|Count lines|Count lines in a text file.|with open(path) as f:~    n = sum(1 for _ in f)
+I|Safe divide|Divide two numbers, returning None on zero or bad input.|def safe_div(a, b):~    try:~        return a / b~    except (ZeroDivisionError, TypeError):~        return None
+I|Write JSON|Save a dict to a JSON file.|import json~with open('out.json', 'w') as f:~    json.dump(data, f, indent=2)
+I|Sum a CSV column|Sum the 'amount' column of a CSV file.|import csv~with open(path, newline='') as f:~    total = sum(float(r['amount']) for r in csv.DictReader(f))`],
+['Python','pandas',`B|Load and peek|Read a CSV and show the first rows.|import pandas as pd~df = pd.read_csv('data.csv')~df.head()
+B|Filter rows|Keep rows where price is above 100 and category is 'A'.|df[(df['price'] > 100) & (df['category'] == 'A')]
+I|Group mean|Average salary per department.|df.groupby('dept')['salary'].mean()
+I|Missing per column|Count missing values per column.|df.isna().sum()
+I|Rename columns|Rename 'old' to 'new'.|df.rename(columns={'old': 'new'})
+I|Add a column|Add total = price * qty.|df['total'] = df['price'] * df['qty']
+I|Sort|Sort by amount descending, then date ascending.|df.sort_values(['amount', 'date'], ascending=[False, True])
+I|Inner merge|Join orders to customers on customer_id.|orders.merge(customers, on='customer_id', how='inner')
+I|Pivot table|Sum of sales by region (rows) and quarter (columns).|df.pivot_table(index='region', columns='quarter', values='sales', aggfunc='sum')
+I|Value share|Percentage share of each category.|df['category'].value_counts(normalize=True) * 100
+A|Rolling average|7-day rolling mean of sales.|df['sales'].rolling(7).mean()
+A|Rank within group|Rank salary within each department.|df['rank'] = df.groupby('dept')['salary'].rank(ascending=False, method='dense')
+A|Monthly resample|Total sales per month from a date column.|df.set_index('date').resample('M')['sales'].sum()
+A|Cumulative per group|Cumulative sales per customer ordered by date.|df = df.sort_values('date')~df['cum'] = df.groupby('customer_id')['sales'].cumsum()`]
+];
+if(!S.pv2){
+ const have=new Set(S.probs.map(p=>p.subj+p.title));
+ NP.forEach(([subj,tags,txt],g)=>txt.split('\n').forEach((ln,i)=>{
+  const p=ln.split('|');if(p.length<4||have.has(subj+p[1]))return;
+  S.probs.push({id:'n'+g+'_'+i,subj,tags:tags.split(','),lv:p[0],title:p[1],prompt:p[2],sol:p.slice(3).join('|').replace(/~/g,'\n')});
+ }));
+ S.pv2=1;save();
+}
+// ---------- Review wrong attempts ----------
+let rf='All';
+S.pst=S.pst||{};
+if(!S.rv){for(const id in S.stats){const s=S.stats[id];if(s.last===undefined&&s.a>s.c){s.last=0;s.w=s.a-s.c}}S.rv=1;save();}
+const wq=()=>S.qs.filter(q=>S.stats[q.id]&&S.stats[q.id].last===0);
+const wp=()=>S.probs.filter(p=>S.pst[p.id]&&S.pst[p.id].last===0);
+const pStat=id=>{const s=S.pst[id];return s&&s.last===0?'<span class="mute" style="margin-left:auto;color:var(--bad);font-weight:700">Missed</span>':s&&s.last===1?'<span class="mute" style="margin-left:auto;color:var(--ok);font-weight:700">Got it</span>':S.att[id]?'<span class="mute" style="margin-left:auto">Attempted</span>':''};
+function vRev(){
+ const Q=wq().filter(q=>rf==='All'||q.subj===rf).sort((a,b)=>(S.stats[a.id].due||0)-(S.stats[b.id].due||0)),P=wp().filter(p=>rf==='All'||p.subj===rf).sort((a,b)=>(S.pst[a.id].due||0)-(S.pst[b.id].due||0));
+ const DQ=Q.filter(q=>isDue(S.stats[q.id]));
+ $('#app').innerHTML=`<div class="card"><h2>Revisit your mistakes</h2>
+ <div class="row"><select id="rs" style="width:auto">${['All','SQL','Python'].map(s=>`<option ${rf===s?'selected':''}>${s}</option>`).join('')}</select><span class="mute">${Q.length} question${Q.length===1?'':'s'}, ${P.length} problem${P.length===1?'':'s'}</span></div>
+ <div class="row" style="margin-top:12px">${Q.length?`<button class="btn" id="pq">Practice ${DQ.length?'due':'all missed'} questions (${DQ.length||Q.length})</button>`:''}${P.length?'<button class="btn alt" id="pp">Start missed problems</button>':''}</div>
+ <p class="mute" style="margin-bottom:0">Missed items come back after 1, 3, 7 and 14 days. Get one right at each step and it graduates; a miss resets it to 1 day.</p></div>
+ ${Q.length?'<h2>Questions</h2>':''}${Q.map(q=>`<div class="card qi ${q.subj}"><div class="row"><span class="subj ${q.subj}">${q.subj}</span>${lvB(q.lv)}${q.tags.map(tagHtml).join('')}<span class="mute" style="margin-left:auto">Missed ${(S.stats[q.id]||{}).w||1}x, ${dueTxt(S.stats[q.id]||{})}</span></div>
+ <div class="qtext" style="font-size:17px">${esc(q.q)}</div><div class="mute">Answer: <b style="color:var(--ok)">${esc(q.opts[q.ans])}</b></div>${q.expl?`<div class="expl">${esc(q.expl)}</div>`:''}${q.note?`<div class="note"><b>Your note:</b> ${esc(q.note)}</div>`:''}
+ <div class="row" style="margin-top:12px"><button class="btn alt" data-mq="${q.id}">Mark mastered</button></div></div>`).join('')}
+ ${P.length?'<h2>Problems</h2>':''}${P.map(p=>`<div class="card qi ${p.subj}"><div class="row"><span class="subj ${p.subj}">${p.subj}</span>${lvB(p.lv)}${p.tags.map(tagHtml).join('')}<span class="mute" style="margin-left:auto">Missed ${(S.pst[p.id]||{}).w||1}x, ${dueTxt(S.pst[p.id]||{})}</span></div>
+ <div class="qtext" style="font-size:17px;margin-bottom:6px">${esc(p.title)}</div>${p.note?`<div class="note"><b>Your note:</b> ${esc(p.note)}</div>`:''}
+ <div class="row" style="margin-top:12px"><button class="btn" data-op="${p.id}">Try again</button><button class="btn alt" data-mp="${p.id}">Mark mastered</button></div></div>`).join('')}
+ ${!Q.length&&!P.length?'<div class="card">Nothing to revisit. Wrong answers and missed problems will show up here.</div>':''}`;
+ $('#rs').onchange=e=>{rf=e.target.value;vRev()};
+ if($('#pq'))$('#pq').onclick=()=>{run={qs:(DQ.length?DQ:Q).map(q=>({q,r:Math.random()})).sort((a,b)=>a.r-b.r).map(x=>x.q),i:0,score:0,picked:null,miss:{}};tab='quiz';render()};
+ if($('#pp'))$('#pp').onclick=()=>{cur=P[0].id;tab='prob';render()};
+ document.querySelectorAll('[data-op]').forEach(b=>b.onclick=()=>{cur=b.dataset.op;tab='prob';render()});
+ document.querySelectorAll('[data-mq]').forEach(b=>b.onclick=()=>{S.stats[b.dataset.mq].last=1;save();render()});
+ document.querySelectorAll('[data-mp]').forEach(b=>b.onclick=()=>{S.pst[b.dataset.mp].last=1;save();render()});
+}
+// ---------- Spaced repetition, progress, backup ----------
+const isDue=s=>!s.due||s.due<=Date.now();
+const dueN=()=>wq().filter(q=>isDue(S.stats[q.id])).length+wp().filter(p=>isDue(S.pst[p.id])).length;
+const dueTxt=s=>isDue(s)?'due now':'due in '+Math.ceil((s.due-Date.now())/864e5)+'d';
+const IV=[1,3,7,14];
+const srUpd=(s,ok)=>{
+ if(!ok){s.w=(s.w||0)+1;s.box=0;s.due=Date.now()+IV[0]*864e5;s.last=0}
+ else if(s.last===0){s.box=(s.box||0)+1;if(s.box>=IV.length)s.last=1;else s.due=Date.now()+IV[s.box]*864e5}
+ else s.last=1;
+};
+const dk=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const logDay=()=>{S.days=S.days||{};const k=dk();S.days[k]=(S.days[k]||0)+1;save()};
+S.days=S.days||{};
+function vDash(){
+ const T={},L={B:[0,0],I:[0,0],A:[0,0]},Sb={SQL:[0,0],Python:[0,0]};let qa=0,qc=0,pdist=0,pgot=0;
+ const add=(it,s)=>{if(!s||!s.a)return;const l=L[it.lv||'B']||L.B;l[0]+=s.a;l[1]+=s.c;Sb[it.subj][0]+=s.a;Sb[it.subj][1]+=s.c;it.tags.forEach(t=>{const x=T[t]=T[t]||[0,0];x[0]+=s.a;x[1]+=s.c})};
+ S.qs.forEach(q=>{const s=S.stats[q.id];if(s&&s.a){qa+=s.a;qc+=s.c}add(q,s)});
+ S.probs.forEach(p=>{const s=S.pst[p.id];if(s&&s.a){pdist++;if(s.last===1)pgot++}add(p,s)});
+ let streak=0;const d=new Date();if(!S.days[dk(d)])d.setDate(d.getDate()-1);while(S.days[dk(d)]){streak++;d.setDate(d.getDate()-1)}
+ const days=[];for(let i=13;i>=0;i--){const x=new Date();x.setDate(x.getDate()-i);days.push([dk(x),S.days[dk(x)]||0])}
+ const mx=Math.max(1,...days.map(x=>x[1])),pct=(a,c)=>a?Math.round(c/a*100):0;
+ const bar=(lb,a,c,co)=>`<div style="margin:10px 0"><div class="row" style="justify-content:space-between"><b>${lb}</b><span class="mute">${a?c+'/'+a+' right ('+pct(a,c)+'%)':'no attempts yet'}</span></div><div class="bar" style="margin:4px 0 0"><i style="width:${pct(a,c)}%;background:${co}"></i></div></div>`;
+ const topics=Object.entries(T).sort((x,y)=>pct(x[1][0],x[1][1])-pct(y[1][0],y[1][1]));
+ const weak=topics.filter(([t,v])=>v[0]>=2&&pct(v[0],v[1])<60);
+ const fresh=[...new Set([...allTags(),...S.probs.flatMap(p=>p.tags)])].filter(t=>!T[t]).sort();
+ const tile=(n,l,c)=>`<div class="card" style="flex:1;min-width:130px;text-align:center;margin:0"><div class="big" style="font-size:34px;color:${c}">${n}</div><div class="mute">${l}</div></div>`;
+ $('#app').innerHTML=`<div class="row" style="margin-bottom:14px">${tile(pct(qa,qc)+'%','quiz accuracy ('+qa+' answers)','var(--p)')}${tile(pgot+'/'+pdist,'problems got right','var(--ok)')}${tile(streak,'day streak','#f97316')}${tile(dueN(),'reviews due','var(--bad)')}</div>
+ <div class="card"><h2>Last 14 days</h2><div class="row" style="align-items:flex-end;gap:5px;height:80px;flex-wrap:nowrap">${days.map(([k,n])=>`<div title="${k}: ${n}" style="flex:1;height:${Math.max(4,n/mx*100)}%;background:${n?'linear-gradient(#ec4899,#7c3aed)':'var(--line)'};border-radius:6px"></div>`).join('')}</div><p class="mute" style="margin-bottom:0">Each bar is one day of answers and problems.</p></div>
+ <div class="card"><h2>By subject and level</h2>${bar('SQL',Sb.SQL[0],Sb.SQL[1],'var(--sql)')}${bar('Python',Sb.Python[0],Sb.Python[1],'var(--py)')}${['B','I','A'].map(k=>bar(LVN[k],L[k][0],L[k][1],LVC[k])).join('')}</div>
+ <div class="card"><h2>Needs work</h2>${weak.length?weak.map(([t,v])=>`${tagHtml(t)} <span class="mute">${pct(v[0],v[1])}% over ${v[0]} tries</span>`).join('<br>'):'<span class="mute">No weak topics yet. Topics under 60% with at least 2 tries appear here.</span>'}</div>
+ <div class="card"><h2>By topic</h2>${topics.map(([t,v])=>bar(esc(t),v[0],v[1],col(t))).join('')||'<span class="mute">Answer some questions to see topic accuracy.</span>'}${fresh.length?`<p><b>Not started</b></p><div class="row">${fresh.map(tagHtml).join('')}</div>`:''}</div>
+ <div class="card"><h2>Backup and restore</h2><p class="mute">Your data lives in this browser only. Export it, copy the text somewhere safe, and paste it here on any device to restore.</p>
+ <textarea id="bk" spellcheck="false" style="min-height:110px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px" placeholder="Press Export, or paste a backup here to restore"></textarea>
+ <div class="row" style="margin-top:10px"><button class="btn" id="ex">Export</button><button class="btn alt" id="cp">Copy</button><button class="btn alt" id="rt">Restore from pasted backup</button></div><p id="bm" class="mute" style="margin-bottom:0"></p></div>`;
+ $('#ex').onclick=()=>{const b=$('#bk');b.value=JSON.stringify(S);b.focus();b.select();$('#bm').textContent='Backup ready. Press Copy and save the text in a note or file.'};
+ $('#cp').onclick=()=>{const b=$('#bk');if(!b.value){$('#bm').textContent='Press Export first.';return}b.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}$('#bm').textContent=ok?'Copied.':'Select the text and copy it manually.'};
+ let arm=0;
+ $('#rt').onclick=()=>{let o;try{o=JSON.parse($('#bk').value)}catch(e){}
+  if(!o||!Array.isArray(o.qs)){arm=0;$('#rt').textContent='Restore from pasted backup';$('#bm').textContent='That does not look like a backup. Paste the full text and try again.';return}
+  if(!arm){arm=1;$('#rt').textContent='Click again to replace all current data';return}
+  o.stats=o.stats||{};o.pst=o.pst||{};o.att=o.att||{};o.probs=o.probs||[];o.days=o.days||{};S=o;save();labDB=null;labState='idle';render();
+ };
+}
+// ---------- Stars, search, mock interview ----------
+S.stars=S.stars||{};
+const starB=id=>`<button class="star" data-st="${id}" aria-label="Star this item" title="Star">${(S.stars||{})[id]?'★':'☆'}</button>`;
+document.getElementById('app').addEventListener('click',e=>{
+ const b=e.target.closest('[data-st]');if(!b)return;
+ e.stopPropagation();e.preventDefault();
+ S.stars=S.stars||{};const id=b.dataset.st;
+ if(S.stars[id])delete S.stars[id];else S.stars[id]=1;
+ save();document.querySelectorAll('[data-st="'+id+'"]').forEach(x=>x.textContent=S.stars[id]?'★':'☆');
+ if(tab==='search'&&sf.star)renderRes();
+},true);
+
+let sf={q:'',type:'All',subj:'All',lv:'All',star:false};
+function vSearch(){
+ const so=(a,c)=>a.map(s=>`<option ${c===s?'selected':''}>${s}</option>`).join('');
+ $('#app').innerHTML=`<div class="card"><input id="sq" placeholder="Search questions, problems, solutions, notes and tags" value="${esc(sf.q)}" autocomplete="off">
+ <div class="grid" style="margin-top:8px"><div><label>Show</label><select id="s1">${so(['All','Questions','Problems'],sf.type)}</select></div><div><label>Subject</label><select id="s2">${so(['All','SQL','Python'],sf.subj)}</select></div>
+ <div><label>Level</label><select id="s3">${lvOpts(sf.lv,1)}</select></div><div><label>Starred</label><select id="s4"><option value="0">All items</option><option value="1" ${sf.star?'selected':''}>Starred only</option></select></div></div></div><div id="sr"></div>`;
+ $('#sq').oninput=e=>{sf.q=e.target.value;renderRes()};
+ $('#s1').onchange=e=>{sf.type=e.target.value;renderRes()};$('#s2').onchange=e=>{sf.subj=e.target.value;renderRes()};
+ $('#s3').onchange=e=>{sf.lv=e.target.value;renderRes()};$('#s4').onchange=e=>{sf.star=e.target.value==='1';renderRes()};
+ renderRes();
+}
+function renderRes(){
+ const t=sf.q.trim().toLowerCase(),f=x=>(sf.subj==='All'||x.subj===sf.subj)&&(sf.lv==='All'||x.lv===sf.lv)&&(!sf.star||S.stars[x.id]),hit=s=>!t||s.toLowerCase().includes(t);
+ const Q=sf.type==='Problems'?[]:S.qs.filter(q=>f(q)&&hit([q.q,q.opts.join(' '),q.tags.join(' '),q.note||'',q.expl||''].join(' ')));
+ const P=sf.type==='Questions'?[]:S.probs.filter(p=>f(p)&&hit([p.title,p.prompt,p.sol,p.tags.join(' '),p.note||''].join(' ')));
+ const n=Q.length+P.length,shown=[...Q.map(x=>({t:'q',x})),...P.map(x=>({t:'p',x}))].slice(0,40);
+ $('#sr').innerHTML=`<p class="mute">${n} result${n===1?'':'s'}${n>40?' (showing the first 40)':''}</p>`+shown.map(({t,x})=>t==='q'?
+  `<div class="card qi ${x.subj}"><div class="row"><span class="subj ${x.subj}">${x.subj}</span>${lvB(x.lv)}${starB(x.id)}${x.tags.map(tagHtml).join('')}<span class="mute" style="margin-left:auto">Question</span></div><div class="qtext" style="font-size:17px">${esc(x.q)}</div><div class="mute">Answer: <b style="color:var(--ok)">${esc(x.opts[x.ans])}</b></div>${x.note?`<div class="note">${esc(x.note)}</div>`:''}</div>`
+  :`<div class="card qi ${x.subj}"><div class="row"><span class="subj ${x.subj}">${x.subj}</span>${lvB(x.lv)}${starB(x.id)}${x.tags.map(tagHtml).join('')}<span class="mute" style="margin-left:auto">Problem</span></div><div class="qtext" style="font-size:17px;margin-bottom:6px">${esc(x.title)}</div><div class="mute">${esc(x.prompt.slice(0,160))}</div><div class="row" style="margin-top:10px"><button class="btn" data-po="${x.id}">Open problem</button></div></div>`).join('');
+ document.querySelectorAll('[data-po]').forEach(b=>b.onclick=()=>{cur=b.dataset.po;tab='prob';render()});
+}
+
+let mc={subj:'All',lv:'All',nq:10,np:2,min:30},mk=null,mtimer=null;
+const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+const mItems=()=>[...mk.qs.map(x=>({t:'q',x})),...mk.ps.map(x=>({t:'p',x}))];
+function vMock(){
+ if(mk)return mk.done?vMockRes():vMockRun();
+ const so=(a,c)=>a.map(s=>`<option ${String(c)===String(s)?'selected':''}>${s}</option>`).join('');
+ $('#app').innerHTML=`<div class="card"><h2>Mock interview</h2><p class="mute">A timed, mixed set with no feedback until you finish, like a real interview. Wrong answers go to Review automatically.</p>
+ <div class="grid"><div><label>Subject</label><select id="m1">${so(['All','SQL','Python'],mc.subj)}</select></div><div><label>Level</label><select id="m2">${lvOpts(mc.lv,1)}</select></div>
+ <div><label>Questions</label><select id="m3">${so([5,10,15,20],mc.nq)}</select></div><div><label>Problems</label><select id="m4">${so([0,1,2,3,5],mc.np)}</select></div>
+ <div><label>Time in minutes</label><select id="m5">${so([10,20,30,45,60],mc.min)}</select></div></div>
+ <p id="me" style="color:var(--bad);font-weight:700"></p><button class="btn" id="mg">Start mock interview</button></div>`;
+ $('#m1').onchange=e=>mc.subj=e.target.value;$('#m2').onchange=e=>mc.lv=e.target.value;$('#m3').onchange=e=>mc.nq=+e.target.value;$('#m4').onchange=e=>mc.np=+e.target.value;$('#m5').onchange=e=>mc.min=+e.target.value;
+ $('#mg').onclick=()=>{
+  const f=x=>(mc.subj==='All'||x.subj===mc.subj)&&(mc.lv==='All'||x.lv===mc.lv);
+  const qs=shuf(S.qs.filter(f)).slice(0,mc.nq),ps=shuf(S.probs.filter(f)).slice(0,mc.np);
+  if(!qs.length&&!ps.length){$('#me').textContent='No items match those filters.';return}
+  mk={qs,ps,ans:{},pa:{},pm:{},i:0,t0:Date.now(),end:Date.now()+mc.min*60000,done:false};
+  clearInterval(mtimer);mtimer=setInterval(tick,1000);render();
+ };
+}
+function tick(){
+ if(!mk||mk.done){clearInterval(mtimer);return}
+ if(tab!=='mock')return;
+ const r=Math.max(0,mk.end-Date.now()),el=$('#tm');
+ if(el){el.textContent=Math.floor(r/60000)+':'+String(Math.floor(r%60000/1000)).padStart(2,'0');el.style.color=r<60000?'var(--bad)':'inherit'}
+ if(r<=0)finishMock();
+}
+function vMockRun(){
+ const it=mItems(),n=it.length,c=it[mk.i],x=c.x;
+ const done=it.filter(o=>o.t==='q'?mk.ans[o.x.id]!==undefined:(mk.pa[o.x.id]||'').trim()).length;
+ $('#app').innerHTML=`<div class="card"><div class="row"><b>Item ${mk.i+1} of ${n}</b><span class="mute">${done} answered</span><b id="tm" style="margin-left:auto;font-size:22px"></b></div>
+ <div class="bar" style="margin-top:10px"><i style="width:${(mk.i+1)/n*100}%"></i></div>
+ <div class="row"><span class="subj ${x.subj}">${x.subj}</span>${lvB(x.lv)}${x.tags.map(tagHtml).join('')}${starB(x.id)}${c.t==='p'?'<span class="mute">Problem: write your answer</span>':''}</div>
+ ${c.t==='q'?`<div class="qtext">${esc(x.q)}</div>${x.opts.map((o,k)=>`<button class="opt ${mk.ans[x.id]===k?'sel':''}" data-k="${k}">${esc(o)}</button>`).join('')}`:`<div class="qtext">${esc(x.title)}</div><div class="prompt">${esc(x.prompt)}</div><textarea class="code" id="pa" spellcheck="false" placeholder="Write your answer">${esc(mk.pa[x.id]||'')}</textarea>`}
+ <div class="row" style="margin-top:14px"><button class="btn alt" id="pv" ${mk.i?'':'disabled'}>Previous</button><button class="btn alt" id="nx" ${mk.i<n-1?'':'disabled'}>Next</button><button class="btn del" id="fn" style="margin-left:auto">Finish</button></div></div>`;
+ document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{mk.ans[x.id]=+b.dataset.k;vMockRun()});
+ if($('#pa'))$('#pa').oninput=e=>{mk.pa[x.id]=e.target.value};
+ $('#pv').onclick=()=>{mk.i--;vMockRun()};$('#nx').onclick=()=>{mk.i++;vMockRun()};
+ let arm=0;$('#fn').onclick=()=>{if(!arm){arm=1;$('#fn').textContent='Click again to submit';return}finishMock()};
+ tick();
+}
+function finishMock(){
+ if(!mk||mk.done)return;mk.done=true;clearInterval(mtimer);mk.used=Math.min(Date.now(),mk.end)-mk.t0;
+ let c=0;
+ mk.qs.forEach(q=>{const a=mk.ans[q.id];if(a===undefined)return;const ok=a===q.ans;if(ok)c++;const st=S.stats[q.id]||{a:0,c:0};st.a++;if(ok)st.c++;srUpd(st,ok);S.stats[q.id]=st;logDay()});
+ mk.ps.forEach(p=>{const a=(mk.pa[p.id]||'').trim();if(a)S.att[p.id]=a});
+ mk.c=c;save();render();
+}
+function vMockRes(){
+ const nq=mk.qs.length,pc=nq?Math.round(mk.c/nq*100):0,m=Math.floor(mk.used/60000),s=String(Math.floor(mk.used%60000/1000)).padStart(2,'0');
+ $('#app').innerHTML=`<div class="card" style="text-align:center"><h2>Mock interview finished</h2><div class="big" style="color:var(--p)">${mk.c}/${nq}</div><p class="mute">${pc}% on questions, time used ${m}:${s}${mk.ps.length?', '+mk.ps.filter(p=>(mk.pa[p.id]||'').trim()).length+' of '+mk.ps.length+' problems attempted':''}</p>
+ <button class="btn" id="nm">New mock interview</button></div>
+ ${mk.qs.map(q=>{const a=mk.ans[q.id],ok=a===q.ans;return `<div class="card qi ${q.subj}"><div class="row"><span class="subj ${q.subj}">${q.subj}</span>${lvB(q.lv)}${starB(q.id)}${q.tags.map(tagHtml).join('')}<b style="margin-left:auto;color:${ok?'var(--ok)':'var(--bad)'}">${a===undefined?'Skipped':ok?'Correct':'Wrong'}</b></div><div class="qtext" style="font-size:17px">${esc(q.q)}</div>${a!==undefined&&!ok?`<div class="mute">Your answer: ${esc(q.opts[a])}</div>`:''}<div class="mute">Answer: <b style="color:var(--ok)">${esc(q.opts[q.ans])}</b></div>${q.expl?`<div class="expl">${esc(q.expl)}</div>`:''}</div>`}).join('')}
+ ${mk.ps.map(p=>`<div class="card qi ${p.subj}"><div class="row"><span class="subj ${p.subj}">${p.subj}</span>${lvB(p.lv)}${starB(p.id)}${p.tags.map(tagHtml).join('')}<span class="mute" style="margin-left:auto">Problem</span></div><div class="qtext" style="font-size:17px;margin-bottom:6px">${esc(p.title)}</div><div class="prompt">${esc(p.prompt)}</div><b>Your answer</b><pre class="code">${esc((mk.pa[p.id]||'').trim()||'(no answer)')}</pre><b>Solution</b><pre class="code">${esc(p.sol)}</pre>
+ <div class="row"><button class="btn" data-pm="${p.id}" data-v="1">I got it</button><button class="btn del" data-pm="${p.id}" data-v="0">I missed it</button><span class="mute"></span></div></div>`).join('')}`;
+ $('#nm').onclick=()=>{mk=null;render()};
+ document.querySelectorAll('[data-pm]').forEach(b=>b.onclick=()=>{
+  const id=b.dataset.pm,ok=b.dataset.v==='1',s=S.pst[id]||{a:0,c:0,w:0};
+  if(!mk.pm[id]){s.a++;if(ok)s.c++;srUpd(s,ok);logDay()}else{s.last=ok?1:0;if(!ok){s.box=0;s.due=Date.now()+864e5}}
+  mk.pm[id]=1;S.pst[id]=s;save();b.parentNode.querySelector('.mute').textContent=ok?'Marked as got it':'Saved to Review';nav();
+ });
+ nav();
+}
+// ---------- SQL Lab (SQLite in the browser via sql.js) ----------
+let labDB=null,labSQL=null,labState='idle';
+let labQ=S.labq||`SELECT d.name AS department, COUNT(*) AS headcount, ROUND(AVG(e.salary)) AS avg_salary
+FROM employees e
+JOIN departments d ON d.id = e.dept_id
+GROUP BY d.name
+ORDER BY headcount DESC;`;
+const LABX=[
+['Top earner per dept',`WITH r AS (
+  SELECT name, dept_id, salary,
+         ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn
+  FROM employees
+)
+SELECT * FROM r WHERE rn = 1;`],
+['No orders',`SELECT c.name
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+WHERE o.id IS NULL;`],
+['Monthly revenue',`SELECT strftime('%Y-%m', order_date) AS month, SUM(amount) AS revenue
+FROM orders
+GROUP BY month
+ORDER BY month;`],
+['Running total',`SELECT id, order_date, amount,
+       SUM(amount) OVER (ORDER BY order_date, id) AS running_total
+FROM orders;`],
+['Org chart',`WITH RECURSIVE t(id, name, depth) AS (
+  SELECT id, name, 0 FROM employees WHERE manager_id IS NULL
+  UNION ALL
+  SELECT e.id, e.name, t.depth + 1 FROM employees e JOIN t ON e.manager_id = t.id
+)
+SELECT * FROM t;`],
+['Duplicate emails',`SELECT email, COUNT(*) AS cnt
+FROM users
+GROUP BY email
+HAVING COUNT(*) > 1;`]
+];
+function labSeed(){
+ let s=7;const rnd=()=>{s=(s*1664525+1013904223)%4294967296;return s/4294967296},ri=(a,b)=>a+Math.floor(rnd()*(b-a+1)),p2=n=>String(n).padStart(2,'0');
+ const q=v=>v===null?'NULL':typeof v==='number'?v:'\''+v+'\'';
+ const ins=(t,rows)=>rows.map(r=>'INSERT INTO '+t+' VALUES('+r.map(q).join(',')+');').join('\n');
+ const dep=['Engineering','Sales','HR','Finance','Support'].map((n,i)=>[i+1,n]);
+ const nm=['Ravi','Asha','Meera','Karan','Neha','Vikram','Isha','Arjun','Priya','Rohan','Sneha','Amit','Divya','Kabir','Anita','Suresh','Pooja','Nikhil','Tara','Manoj','Leela','Dev','Gita','Harsh'];
+ const emp=nm.map((n,i)=>[i+1,n,ri(30,120)*1000,i<5?i+1:ri(1,5),i===0?null:i<5?1:ri(1,5),'20'+p2(ri(18,24))+'-'+p2(ri(1,12))+'-'+p2(ri(1,28))]);
+ const cn=['Acme Corp','Bluebird','Cascade','Delta Foods','Everest','Fusion','Globex','Horizon','Indigo','Jade Labs','Kite','Lumen'],ct=['Pune','Delhi','Mumbai','Bengaluru','Chennai'];
+ const cu=cn.map((n,i)=>[i+1,n,ct[ri(0,4)],'2023-'+p2(ri(1,12))+'-'+p2(ri(1,28))]);
+ const pr=[['Pen','Stationery',5],['Notebook','Stationery',12],['Desk Lamp','Home',45],['Headphones','Electronics',120],['Keyboard','Electronics',65],['Mouse','Electronics',25],['Backpack','Home',55],['Monitor','Electronics',480],['Chair','Home',350],['Whiteboard','Stationery',90]].map((r,i)=>[i+1,...r]);
+ const st=['completed','completed','completed','pending','cancelled'],od=[],oi=[];
+ for(let i=1;i<=60;i++){od.push([i,ri(1,10),'2024-'+p2(ri(1,12))+'-'+p2(ri(1,28)),ri(20,900),st[ri(0,4)]]);const k=ri(1,3),used=new Set();for(let j=0;j<k;j++){const p=ri(1,9);if(!used.has(p)){used.add(p);oi.push([i,p,ri(1,5)])}}}
+ const lg=[];[1,2,3,4,5].forEach(d=>lg.push([1,'2024-01-'+p2(d)]));
+ for(let u=2;u<=6;u++){const days=new Set();while(days.size<5)days.add(ri(1,15));days.forEach(d=>lg.push([u,'2024-01-'+p2(d)]))}
+ const us=[[1,'Ravi','Kumar','ravi@acme.com','1990-04-12','2024-01-05'],[2,'Asha','Rao','asha@acme.com','1992-08-30','2024-02-01'],[3,'Ravi','Kumar','ravi@acme.com','1990-04-12','2024-03-10'],[4,'Meera','Shah','meera@globex.com','1988-11-02','2024-01-20'],[5,'Karan','Das','karan@globex.com','1995-01-25','2024-02-14'],[6,'Asha','Rao','asha@acme.com','1992-08-30','2024-04-02'],[7,'Neha','Jain','neha@kite.io','1993-06-18','2024-01-09'],[8,'Vikram','Nair','vikram@kite.io','1991-12-07','2024-03-03']];
+ const sa=[];['North','South'].forEach(r=>['Widget','Gadget'].forEach(p=>['Q1','Q2','Q3','Q4'].forEach(qt=>sa.push([r,p,qt,ri(100,900)]))));
+ const ddl=`CREATE TABLE departments(id INTEGER PRIMARY KEY, name TEXT);
+CREATE TABLE employees(id INTEGER PRIMARY KEY, name TEXT, salary INTEGER, dept_id INTEGER, manager_id INTEGER, hire_date TEXT);
+CREATE TABLE customers(id INTEGER PRIMARY KEY, name TEXT, city TEXT, signup_date TEXT);
+CREATE TABLE products(id INTEGER PRIMARY KEY, name TEXT, category TEXT, price REAL);
+CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER, order_date TEXT, amount REAL, status TEXT);
+CREATE TABLE order_items(order_id INTEGER, product_id INTEGER, qty INTEGER);
+CREATE TABLE logins(user_id INTEGER, login_date TEXT);
+CREATE TABLE users(id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, birth_date TEXT, updated_at TEXT);
+CREATE TABLE sales(region TEXT, product TEXT, quarter TEXT, amount REAL);
+`;
+ return ddl+[['departments',dep],['employees',emp],['customers',cu],['products',pr],['orders',od],['order_items',oi],['logins',lg],['users',us],['sales',sa]].map(([t,r])=>ins(t,r)).join('\n');
+}
+function labReset(){labDB=new labSQL.Database();labDB.exec(labSeed());(S.labD||[]).forEach(k=>{if(LABD[k])labDB.exec(LABD[k].sql())});Object.entries(S.labT||{}).forEach(([n,c])=>{try{labCsv(n,c)}catch(e){}})}
+function labLoad(){
+ const go=()=>initSqlJs().then(SQL=>{labSQL=SQL;labReset();labState='ready';if(tab==='lab')vLab()}).catch(()=>{labState='fail';if(tab==='lab')vLab()});
+ if(window.initSqlJs)return go();
+ const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-asm.min.js';
+ sc.onload=go;sc.onerror=()=>{labState='fail';if(tab==='lab')vLab()};document.head.appendChild(sc);
+}
+function labSchema(){
+ const el=$('#sch');if(!el||!labDB)return;
+ const names=labDB.exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")[0].values.map(r=>r[0]);
+ el.innerHTML=names.map(t=>{const cols=labDB.exec('PRAGMA table_info('+t+')')[0].values.map(c=>c[1]).join(', '),n=labDB.exec('SELECT COUNT(*) FROM '+t)[0].values[0][0];return `<div style="margin:8px 0"><button class="chip" style="background:${col(t)}" data-pt="${t}">${t}</button> <span class="mute">${n} rows</span>${(S.labT||{})[t]?` <button class="chip off" data-rm="${t}">Remove</button>`:''}<div class="mute" style="font-size:13px">${cols}</div></div>`}).join('');
+ el.querySelectorAll('[data-pt]').forEach(b=>b.onclick=()=>{$('#lq').value='SELECT * FROM '+b.dataset.pt+' LIMIT 20;';labRun()});
+ el.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const t=b.dataset.rm;delete S.labT[t];labDB.exec('DROP TABLE IF EXISTS '+t);save();labSchema()});
+}
+function labRun(){
+ const sql=$('#lq').value;labQ=sql;S.labq=sql;save();
+ const t0=performance.now();let out;
+ try{out=labDB.exec(sql)}catch(e){$('#lo').innerHTML=`<div class="card" style="border-color:var(--bad)"><b style="color:var(--bad)">Error</b><pre class="code">${esc(e.message||e)}</pre></div>`;return}
+ const ms=Math.round(performance.now()-t0);
+ labSchema();
+ if(!out.length){$('#lo').innerHTML=`<div class="card">Ran OK in ${ms} ms. No rows returned.</div>`;return}
+ $('#lo').innerHTML=out.map(r=>`<div class="card"><div class="mute" style="margin-bottom:8px">${r.values.length} row${r.values.length===1?'':'s'} in ${ms} ms${r.values.length>200?' (showing the first 200)':''}</div><div style="overflow-x:auto"><table class="rt"><tr>${r.columns.map(c=>`<th>${esc(c)}</th>`).join('')}</tr>${r.values.slice(0,200).map(v=>`<tr>${v.map(x=>`<td>${x===null?'<i class="mute">NULL</i>':esc(x)}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('');
+}
+function vLab(){
+ if(labState==='fail'){labState='idle';$('#app').innerHTML=`<div class="card"><h2>SQL Lab</h2><p style="color:var(--bad);font-weight:700">The SQL engine could not load. Check your connection and reopen this tab.</p></div>`;return}
+ if(!labDB){$('#app').innerHTML=`<div class="card"><h2>SQL Lab</h2><p class="mute">Loading the SQL engine. This takes a few seconds the first time.</p></div>`;if(labState!=='loading'){labState='loading';labLoad()}return}
+ $('#app').innerHTML=`<div class="card"><h2>SQL Lab</h2><p class="mute" style="margin-top:0">A real SQLite database running in your browser, loaded with sample tables. Press Ctrl+Enter (Cmd+Enter on Mac) to run. SQLite syntax differs a little from Postgres: use strftime('%Y-%m', d) instead of DATE_TRUNC, and there is no EXTRACT, INTERVAL or PERCENTILE_CONT.</p>
+ <div class="row" style="margin-bottom:10px">${LABX.map((x,i)=>`<button class="chip" style="background:${PAL[i%PAL.length]}" data-x="${i}">${x[0]}</button>`).join('')}</div>
+ <textarea class="code" id="lq" spellcheck="false" style="min-height:170px">${esc(labQ)}</textarea>
+ <div class="row" style="margin-top:10px"><button class="btn" id="lr">Run</button><button class="btn alt" id="lc">Clear</button><button class="btn alt" id="lx">Reset data</button><span id="lm" class="mute"></span></div></div>
+ <div id="lo"></div>
+ <div class="card"><h2>Add datasets</h2><p class="mute" style="margin-top:0">Add a ready-made sample dataset, or bring your own data as CSV. Added datasets are kept the next time you open the app.</p>
+ <div class="row">${Object.entries(LABD).map(([k,d])=>{const on=(S.labD||[]).includes(k);return `<button class="chip ${on?'':'off'}" style="background:${d.c}" data-ds="${k}">${on?'✓ ':'+ '}${d.label}</button><span class="mute" style="font-size:13px">${d.tables.join(', ')}</span>`}).join('')}</div>
+ <h2 style="margin-top:18px;font-size:17px">Your own table</h2>
+ <label>Table name</label><input id="ctn" placeholder="for example my_sales">
+ <label>CSV data (first row is the header)</label><textarea class="code" id="ctx" spellcheck="false" placeholder="id,name,amount&#10;1,Asha,250&#10;2,Ravi,310"></textarea>
+ <div class="row" style="margin-top:10px"><input type="file" id="cf" accept=".csv,.tsv,.txt" style="width:auto"><button class="btn" id="cb">Create table</button></div><p id="cm" style="font-weight:700;margin-bottom:0"></p></div>
+ <div class="card"><h2>Tables</h2><div id="sch"></div></div>`;
+ $('#lr').onclick=labRun;
+ $('#lc').onclick=()=>{$('#lq').value='';$('#lq').focus()};
+ $('#lx').onclick=()=>{labReset();labSchema();$('#lo').innerHTML='';$('#lm').textContent='Sample data restored.'};
+ $('#lq').onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();labRun()}};
+ document.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{$('#lq').value=LABX[+b.dataset.x][1];labRun()});
+ labSchema();
+ labExtras();
+}
+const Q34=String.fromCharCode(34),qi=x=>Q34+x+Q34;
+function csvParse(t){
+ t=t.replace(/\r\n?/g,'\n');const l0=t.split('\n')[0],d=l0.includes('\t')&&!l0.includes(',')?'\t':',';
+ const rows=[];let r=[],f='',q=false;
+ for(let i=0;i<t.length;i++){const c=t[i];
+  if(q){if(c===Q34){if(t[i+1]===Q34){f+=Q34;i++}else q=false}else f+=c}
+  else if(c===Q34)q=true;else if(c===d){r.push(f);f=''}else if(c==='\n'){r.push(f);rows.push(r);r=[];f=''}else f+=c}
+ if(f!==''||r.length){r.push(f);rows.push(r)}
+ return rows.filter(x=>x.some(v=>v.trim()!==''));
+}
+function labCsv(name,csv){
+ if(!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name))throw new Error('Table name must start with a letter and use only letters, digits and underscores.');
+ const have=labDB.exec("SELECT name FROM sqlite_master WHERE type='table'");
+ if(have.length&&have[0].values.some(v=>v[0].toLowerCase()===name.toLowerCase())&&!(S.labT||{})[name])throw new Error('A table named '+name+' already exists. Choose another name.');
+ const rows=csvParse(csv);if(rows.length<2)throw new Error('Add a header row and at least one data row.');
+ const seen={},hdr=rows[0].map((h,i)=>{let c=h.trim().replace(/[^A-Za-z0-9_]+/g,'_').replace(/^_+|_+$/g,'')||'col'+(i+1);if(/^\d/.test(c))c='c_'+c;let k=c,n=2;while(seen[k.toLowerCase()])k=c+'_'+n++;seen[k.toLowerCase()]=1;return k});
+ const body=rows.slice(1).map(r=>hdr.map((_,i)=>(r[i]===undefined?'':r[i]).trim()));
+ const ty=hdr.map((_,i)=>{const v=body.map(r=>r[i]).filter(x=>x!=='');if(!v.length)return 'TEXT';if(v.every(x=>/^-?\d+$/.test(x)))return 'INTEGER';if(v.every(x=>/^-?\d*\.?\d+(e-?\d+)?$/i.test(x)))return 'REAL';return 'TEXT'});
+ labDB.run('DROP TABLE IF EXISTS '+qi(name));
+ labDB.run('CREATE TABLE '+qi(name)+' ('+hdr.map((h,i)=>qi(h)+' '+ty[i]).join(', ')+')');
+ const st=labDB.prepare('INSERT INTO '+qi(name)+' VALUES ('+hdr.map(()=>'?').join(',')+')');
+ body.forEach(r=>st.run(r.map((x,i)=>x===''?null:ty[i]==='TEXT'?x:Number(x))));st.free();
+ return body.length;
+}
+const lr=seed=>{let s=seed;return (a,b)=>{s=(s*1664525+1013904223)%4294967296;return a+Math.floor(s/4294967296*(b-a+1))}};
+const lv_=v=>typeof v==='number'?v:'\''+v+'\'';
+const LABD={
+ movies:{label:'Movies and ratings',c:'#ec4899',tables:['movies','ratings'],sql:()=>{
+  const r=lr(11),p2=n=>String(n).padStart(2,'0');
+  const M=[['Inception','Sci-Fi',2010,'Nolan'],['Interstellar','Sci-Fi',2014,'Nolan'],['The Dark Knight','Action',2008,'Nolan'],['Parasite','Thriller',2019,'Bong'],['Spirited Away','Animation',2001,'Miyazaki'],['Whiplash','Drama',2014,'Chazelle'],['Dangal','Drama',2016,'Tiwari'],['3 Idiots','Comedy',2009,'Hirani'],['RRR','Action',2022,'Rajamouli'],['Coco','Animation',2017,'Unkrich']];
+  let s='DROP TABLE IF EXISTS movies;DROP TABLE IF EXISTS ratings;CREATE TABLE movies(id INTEGER PRIMARY KEY, title TEXT, genre TEXT, year INTEGER, director TEXT);CREATE TABLE ratings(user_id INTEGER, movie_id INTEGER, rating INTEGER, rated_at TEXT);';
+  M.forEach((m,i)=>{s+='INSERT INTO movies VALUES('+[i+1,...m].map(lv_).join(',')+');'});
+  for(let u=1;u<=10;u++)for(let m=1;m<=10;m++)if(r(0,2)>0)s+='INSERT INTO ratings VALUES('+[u,m,r(1,5),'2024-'+p2(r(1,12))+'-'+p2(r(1,28))].map(lv_).join(',')+');';
+  return s}},
+ school:{label:'School',c:'#0d9488',tables:['students','courses','enrollments'],sql:()=>{
+  const r=lr(23),N=['Aarav','Diya','Kabir','Meera','Rohan','Sara','Tanvi','Uday','Veena','Yash','Zoya','Ishaan'],C=['Pune','Delhi','Mumbai','Chennai'];
+  const K=[['Mathematics','Mr Rao',4],['Physics','Ms Iyer',4],['History','Mr Khan',3],['Biology','Ms Das',3],['English','Ms Paul',3],['Computer Science','Mr Nair',4]];
+  let s='DROP TABLE IF EXISTS students;DROP TABLE IF EXISTS courses;DROP TABLE IF EXISTS enrollments;CREATE TABLE students(id INTEGER PRIMARY KEY, name TEXT, grade INTEGER, city TEXT);CREATE TABLE courses(id INTEGER PRIMARY KEY, title TEXT, teacher TEXT, credits INTEGER);CREATE TABLE enrollments(student_id INTEGER, course_id INTEGER, score INTEGER);';
+  N.forEach((n,i)=>{s+='INSERT INTO students VALUES('+[i+1,n,r(9,12),C[r(0,3)]].map(lv_).join(',')+');'});
+  K.forEach((k,i)=>{s+='INSERT INTO courses VALUES('+[i+1,...k].map(lv_).join(',')+');'});
+  for(let st=1;st<=12;st++){const used=new Set();while(used.size<3)used.add(r(1,6));used.forEach(c=>{s+='INSERT INTO enrollments VALUES('+[st,c,r(40,100)].join(',')+');'})}
+  return s}}
+};
+function labExtras(){
+ const keep=()=>{labQ=$('#lq').value};
+ document.querySelectorAll('[data-ds]').forEach(b=>b.onclick=()=>{keep();const k=b.dataset.ds;S.labD=S.labD||[];
+  if(S.labD.includes(k)){S.labD=S.labD.filter(x=>x!==k);LABD[k].tables.forEach(t=>labDB.exec('DROP TABLE IF EXISTS '+t))}else{S.labD.push(k);labDB.exec(LABD[k].sql())}
+  save();vLab()});
+ $('#cf').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{$('#ctx').value=rd.result;if(!$('#ctn').value)$('#ctn').value=f.name.replace(/\.[^.]*$/,'').replace(/[^A-Za-z0-9_]+/g,'_').replace(/^(\d)/,'t_$1')};rd.readAsText(f)};
+ $('#cb').onclick=()=>{keep();const n=$('#ctn').value.trim(),c=$('#ctx').value,m=$('#cm');
+  try{const k=labCsv(n,c);S.labT=S.labT||{};S.labT[n]=c;save();vLab();$('#cm').style.color='var(--ok)';$('#cm').textContent='Created table '+n+' with '+k+' rows. Query it above.'}
+  catch(e){m.style.color='var(--bad)';m.textContent=e.message}};
+}
+// ---------- More problems: window functions and Python concepts ----------
+const NP2=[
+['SQL','window functions,movies',`I|Rank movies by average rating|Movies dataset (add it in SQL Lab): movies(id,title,genre,year,director), ratings(user_id,movie_id,rating,rated_at). Rank movies by average rating, highest first.|WITH a AS (SELECT m.title, AVG(r.rating) AS avg_r FROM movies m JOIN ratings r ON r.movie_id = m.id GROUP BY m.id, m.title) SELECT title, ROUND(avg_r, 2) AS avg_r, RANK() OVER (ORDER BY avg_r DESC) AS rnk FROM a;
+I|Best rated movie per genre|Movies dataset. The highest average-rated movie in each genre.|WITH a AS (SELECT m.genre, m.title, AVG(r.rating) AS avg_r FROM movies m JOIN ratings r ON r.movie_id = m.id GROUP BY m.id), b AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY genre ORDER BY avg_r DESC) AS rn FROM a) SELECT genre, title, ROUND(avg_r, 2) FROM b WHERE rn = 1;
+A|Rating versus the user's own average|Movies dataset. For each rating show how far it is from that user's average rating.|SELECT user_id, movie_id, rating, ROUND(rating - AVG(rating) OVER (PARTITION BY user_id), 2) AS diff FROM ratings;~-- Positive means a generous rating for that user.
+I|Previous rating per user|Movies dataset. Each rating with the same user's previous rating by date.|SELECT user_id, rated_at, rating, LAG(rating) OVER (PARTITION BY user_id ORDER BY rated_at) AS prev_rating FROM ratings;
+A|Movies above their genre average|Movies dataset. Movies whose average rating beats the average of movie averages in their genre.|WITH a AS (SELECT m.title, m.genre, AVG(r.rating) AS avg_r FROM movies m JOIN ratings r ON r.movie_id = m.id GROUP BY m.id), b AS (SELECT *, AVG(avg_r) OVER (PARTITION BY genre) AS g_avg FROM a) SELECT title, genre, ROUND(avg_r, 2) FROM b WHERE avg_r > g_avg;
+A|Percent rank of movies|Movies dataset. PERCENT_RANK of each movie by average rating.|WITH a AS (SELECT m.title, AVG(r.rating) AS avg_r FROM movies m JOIN ratings r ON r.movie_id = m.id GROUP BY m.id) SELECT title, ROUND(PERCENT_RANK() OVER (ORDER BY avg_r), 2) AS pr FROM a ORDER BY pr DESC;`],
+['SQL','window functions,school',`I|Rank students in each course|School dataset (add it in SQL Lab): students(id,name,grade,city), courses(id,title,teacher,credits), enrollments(student_id,course_id,score). Rank students by score within each course.|SELECT c.title, s.name, e.score, DENSE_RANK() OVER (PARTITION BY e.course_id ORDER BY e.score DESC) AS rnk FROM enrollments e JOIN students s ON s.id = e.student_id JOIN courses c ON c.id = e.course_id;
+I|Top scorer per course|School dataset. The highest-scoring student in each course.|WITH r AS (SELECT e.course_id, e.student_id, e.score, ROW_NUMBER() OVER (PARTITION BY e.course_id ORDER BY e.score DESC) AS rn FROM enrollments e) SELECT c.title, s.name, r.score FROM r JOIN courses c ON c.id = r.course_id JOIN students s ON s.id = r.student_id WHERE rn = 1;
+A|Score versus course average|School dataset. Each score minus its course average.|SELECT c.title, s.name, e.score, ROUND(e.score - AVG(e.score) OVER (PARTITION BY e.course_id), 1) AS vs_avg FROM enrollments e JOIN students s ON s.id = e.student_id JOIN courses c ON c.id = e.course_id;
+A|Best and worst course per student|School dataset. For each student show the best-scoring and worst-scoring course.|SELECT DISTINCT s.name, FIRST_VALUE(c.title) OVER w AS best, LAST_VALUE(c.title) OVER w AS worst FROM enrollments e JOIN students s ON s.id = e.student_id JOIN courses c ON c.id = e.course_id WINDOW w AS (PARTITION BY s.id ORDER BY e.score DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING);~-- LAST_VALUE needs the full frame; the default frame ends at the current row.
+A|Share of class at or below|School dataset. CUME_DIST of each score within its course.|SELECT course_id, student_id, score, ROUND(CUME_DIST() OVER (PARTITION BY course_id ORDER BY score), 2) AS cd FROM enrollments;
+I|Score quartiles|School dataset. Put every enrollment into a score quartile, 1 being the top.|SELECT student_id, course_id, score, NTILE(4) OVER (ORDER BY score DESC) AS quartile FROM enrollments;`],
+['SQL','window functions',`I|Salary rank in department and company|employees(id,name,salary,dept_id,manager_id,hire_date) in the SQL Lab sample data. Show both the department rank and the company rank.|SELECT name, dept_id, salary, RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS dept_rank, RANK() OVER (ORDER BY salary DESC) AS company_rank FROM employees;
+A|Gap to the department maximum|employees. How far each salary is below its department's maximum.|SELECT name, dept_id, salary, MAX(salary) OVER (PARTITION BY dept_id) - salary AS gap FROM employees;
+A|Cumulative percent of revenue|orders(id,customer_id,order_date,amount,status). Running percent of total revenue by date.|SELECT id, order_date, amount, ROUND(100.0 * SUM(amount) OVER (ORDER BY order_date, id) / SUM(amount) OVER (), 1) AS cum_pct FROM orders;
+A|Moving sum of 3 orders|orders. Sum of the current and previous 2 orders, overall.|SELECT id, order_date, amount, SUM(amount) OVER (ORDER BY order_date, id ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS sum3 FROM orders;
+A|Second order per customer|orders. Each customer's second order.|WITH r AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date, id) AS rn FROM orders) SELECT * FROM r WHERE rn = 2;
+A|Longest gap between orders|orders. The largest number of days between consecutive orders per customer.|WITH g AS (SELECT customer_id, julianday(order_date) - julianday(LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date, id)) AS gap FROM orders) SELECT customer_id, MAX(gap) AS max_gap FROM g GROUP BY customer_id;
+A|Peers within 10000|employees. For each employee, count colleagues earning within 10000 of them.|SELECT name, salary, COUNT(*) OVER (ORDER BY salary RANGE BETWEEN 10000 PRECEDING AND 10000 FOLLOWING) - 1 AS peers FROM employees;~-- RANGE compares values; ROWS counts rows.
+A|Month-over-month growth|orders. Monthly revenue and percent change from the previous month.|WITH m AS (SELECT strftime('%Y-%m', order_date) AS mon, SUM(amount) AS rev FROM orders GROUP BY mon) SELECT mon, rev, ROUND(100.0 * (rev - LAG(rev) OVER (ORDER BY mon)) / LAG(rev) OVER (ORDER BY mon), 1) AS pct_change FROM m;
+I|First hire per department|employees. The earliest hired employee in each department.|WITH r AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY hire_date) AS rn FROM employees) SELECT dept_id, name, hire_date FROM r WHERE rn = 1;
+I|Reuse a named window|employees. Show rank, row number and running salary total using one named window.|SELECT name, salary, RANK() OVER w AS rnk, ROW_NUMBER() OVER w AS rn, SUM(salary) OVER w AS running FROM employees WINDOW w AS (ORDER BY salary DESC);`],
+['Python','python concepts,closures,scope',`I|Late binding in lambdas|What does fs = [lambda: i for i in range(3)] then [f() for f in fs] print? Fix it.|# Prints [2, 2, 2]: each lambda reads i after the loop has finished.~fs = [lambda i=i: i for i in range(3)]~[f() for f in fs]   # [0, 1, 2]~# Default arguments are evaluated when the lambda is defined.
+I|Counter closure|Write make_counter() whose returned function adds 1 on every call.|def make_counter():~    n = 0~    def inc():~        nonlocal n~        n += 1~        return n~    return inc~c = make_counter(); c(); c()   # 2
+I|UnboundLocalError|Why does def f(): print(x); x = 2 fail with UnboundLocalError when x also exists globally?|# Assigning to x anywhere in f makes x local for the whole function,~# so print(x) reads a local that has no value yet.~def f():~    global x   # or use a different local name~    print(x)~    x = 2
+I|global versus nonlocal|Explain the difference with a short example.|x = 0~def outer():~    y = 0~    def inner():~        global x~        nonlocal y~        x += 1   # module-level variable~        y += 1   # variable in the enclosing function~    inner()~    return y~# global targets module scope; nonlocal targets the nearest enclosing function.
+A|Inspect a closure|Show how to read the value a closure captured.|def make(n):~    return lambda: n~f = make(5)~f.__closure__[0].cell_contents   # 5~# A closure keeps the variable (a cell), not a copy of its value.`],
+['Python','python concepts,decorators',`I|Why functools.wraps|What does functools.wraps fix in a decorator?|import functools~def deco(f):~    @functools.wraps(f)~    def wrap(*a, **k):~        return f(*a, **k)~    return wrap~# Without wraps, f.__name__ and f.__doc__ become those of wrap.
+A|Call counter decorator|Write a decorator that counts calls and stores the count on the function.|def counted(f):~    def wrap(*a, **k):~        wrap.calls += 1~        return f(*a, **k)~    wrap.calls = 0~    return wrap
+A|Stacked decorator order|In which order do @a above @b above def f() apply and run?|@a~@b~def f(): ...~# Same as f = a(b(f)): b wraps f first, then a wraps that.~# At call time a's wrapper runs first, then b's, then f.
+A|Cache with expiry|Write a decorator that caches results for 5 seconds.|import time, functools~def ttl_cache(sec=5):~    def deco(f):~        store = {}~        @functools.wraps(f)~        def wrap(*a):~            now = time.time()~            if a in store and now - store[a][1] < sec:~                return store[a][0]~            store[a] = (f(*a), now)~            return store[a][0]~        return wrap~    return deco`],
+['Python','python concepts,generators,iterators',`I|yield from|Flatten a nested list lazily using yield from.|def flat(x):~    for i in x:~        if isinstance(i, list):~            yield from flat(i)~        else:~            yield i
+I|Running average with send()|Write a coroutine that returns the running average of the values sent in.|def avg():~    total = n = 0~    val = None~    while True:~        x = yield val~        total += x; n += 1~        val = total / n~g = avg(); next(g)~g.send(10); g.send(20)   # 15.0
+A|Generator pipeline|Read lines, drop blanks, strip and uppercase them lazily.|def lines(path):~    with open(path) as f:~        yield from f~def clean(it):~    return (l.strip() for l in it if l.strip())~for s in (x.upper() for x in clean(lines('a.txt'))):~    print(s)~# Each stage pulls one item at a time, so memory use stays flat.
+I|iter with a sentinel|Read a binary file 1 KB at a time until it is empty using iter().|with open('big.bin', 'rb') as f:~    for chunk in iter(lambda: f.read(1024), b''):~        process(chunk)`],
+['Python','python concepts,mutability,copying',`I|Mutable default argument fix|Fix def add(x, acc=[]): acc.append(x); return acc|def add(x, acc=None):~    if acc is None:~        acc = []~    acc.append(x)~    return acc~# The default list was created once, at definition time, and is shared by every call.
+I|List aliasing|What do a and b hold after a = [1, 2]; b = a; b.append(3)?|# Both are [1, 2, 3]: b is another name for the same list.~b = a.copy()   # or list(a) or a[:] for an independent shallow copy
+I|The [[0]*3]*3 trap|Why does g = [[0]*3]*3 then g[0][0] = 1 change every row? Fix it.|# The outer * repeats a reference to the same inner list three times.~g = [[0] * 3 for _ in range(3)]   # three separate lists
+A|is versus ==|Why can a is b be True for 256 but not always for 1000?|# CPython caches small ints (-5 to 256), so equal small ints are one object.~# Larger ints are usually separate objects. Use == for value; use is only for None and identity checks.`],
+['Python','python concepts,oop,dunder methods',`I|repr versus str|When is __repr__ used and when is __str__ used?|class P:~    def __repr__(self): return 'P(1, 2)'    # for developers: debugging, REPL~    def __str__(self): return 'point 1,2'   # for users: print()~# print(p) uses __str__ and falls back to __repr__ if __str__ is missing.
+I|total_ordering|Support all comparisons on a Money class with minimal methods.|from functools import total_ordering~@total_ordering~class Money:~    def __init__(self, v): self.v = v~    def __eq__(self, o): return self.v == o.v~    def __lt__(self, o): return self.v < o.v~# <=, > and >= are filled in automatically.
+A|Sequence-like class|Make a class that supports len() and indexing.|class Bag:~    def __init__(self, items): self.items = list(items)~    def __len__(self): return len(self.items)~    def __getitem__(self, i): return self.items[i]~# Indexing also gives you iteration and the in operator.
+A|Diamond MRO|Classes B(A), C(A) and D(B, C). In what order is a method looked up on D?|# D, B, C, A, object  (C3 linearisation)~print(D.__mro__)~# super() follows this order, which is why cooperative super() works in diamonds.
+I|Property with validation|Stop an Age class from accepting negative values.|class P:~    def __init__(self, age): self.age = age~    @property~    def age(self): return self._age~    @age.setter~    def age(self, v):~        if v < 0:~            raise ValueError('age must be >= 0')~        self._age = v
+A|Dataclass defaults|Define a small record with a list field safely.|from dataclasses import dataclass, field~@dataclass~class User:~    name: str~    tags: list = field(default_factory=list)   # never tags: list = []~# slots=True (3.10+) saves memory and blocks accidental new attributes.`],
+['Python','python concepts,context managers',`I|Class-based context manager|Write a context manager that prints on entry and exit.|class Ctx:~    def __enter__(self):~        print('enter'); return self~    def __exit__(self, exc_type, exc, tb):~        print('exit'); return False   # False lets exceptions propagate
+I|Two files in one with|Copy one file to another using a single with statement.|with open('a.txt') as src, open('b.txt', 'w') as dst:~    for line in src:~        dst.write(line)`],
+['Python','python concepts,itertools,collections',`I|groupby needs sorted data|Group words by their first letter with itertools.groupby.|from itertools import groupby~words = sorted(words)~for k, g in groupby(words, key=lambda w: w[0]):~    print(k, list(g))~# groupby only groups consecutive items, so sort first.
+I|Combinatorics counts|How many results do permutations(range(4), 2) and combinations(range(4), 2) give?|from itertools import permutations, combinations~len(list(permutations(range(4), 2)))   # 12~len(list(combinations(range(4), 2)))    # 6
+I|Nested defaultdict|Build counts[dept][city] += 1 without checking for missing keys.|from collections import defaultdict~counts = defaultdict(lambda: defaultdict(int))~counts['IT']['Pune'] += 1
+I|Sliding window with deque|Keep only the last 3 values seen.|from collections import deque~w = deque(maxlen=3)~for x in range(6):~    w.append(x)~print(list(w))   # [3, 4, 5]
+I|namedtuple|Create an immutable Point with x and y.|from collections import namedtuple~Point = namedtuple('Point', 'x y')~p = Point(1, 2)~p.x, p._replace(x=5)`],
+['Python','python concepts,functions,args',`I|Keyword-only arguments|Force callers to name the timeout argument.|def connect(host, *, timeout=5):~    ...~connect('a', timeout=3)   # ok~connect('a', 3)            # TypeError
+I|Unpacking in calls|What does f(*[1, 2], **{'c': 3}) do for def f(a, b, c)?|def f(a, b, c): return a + b + c~f(*[1, 2], **{'c': 3})   # 6~# * spreads a sequence into positional arguments; ** spreads a dict into keywords.
+I|reduce for a product|Compute the product of a list with functools.reduce.|from functools import reduce~from operator import mul~reduce(mul, [1, 2, 3, 4], 1)   # 24`],
+['Python','python concepts,exceptions',`I|Custom exception hierarchy|Create AppError and a ValidationError subclass and catch them.|class AppError(Exception): pass~class ValidationError(AppError): pass~try:~    raise ValidationError('bad input')~except AppError as e:   # also catches subclasses~    print(e)
+I|raise from|Re-raise a different error while keeping the original cause.|try:~    int('x')~except ValueError as e:~    raise RuntimeError('config invalid') from e~# The traceback shows both errors, linked as cause and effect.
+A|finally overrides return|What does def f(): try: return 1 finally: return 2 return?|# It returns 2: the finally block runs last and its return replaces the earlier one.~# Avoid return, break or continue inside finally.`],
+['Python','python concepts,sorting,misc',`I|Stable sort with a tuple key|Sort people by age, then by name.|sorted(people, key=lambda p: (p['age'], p['name']))~# sorted() is stable: items with equal keys keep their original order.
+I|zip_longest|Pair two uneven lists, padding the shorter with None.|from itertools import zip_longest~list(zip_longest([1, 2, 3], 'ab'))   # [(1, 'a'), (2, 'b'), (3, None)]
+A|Walrus operator|Use := to avoid computing a value twice in a comprehension.|data = [1, 5, 8]~out = [y for x in data if (y := x * 2) > 5]   # [10, 16]~# := assigns and returns the value inside an expression.
+I|Merge dicts and read nested keys|Merge two dicts (3.9+) and read a nested key safely.|merged = a | b   # right side wins on shared keys~port = cfg.get('db', {}).get('port', 5432)`]
+];
+if(!S.pv3){
+ const have=new Set(S.probs.map(p=>p.subj+p.title));
+ NP2.forEach(([subj,tags,txt],g)=>txt.split('\n').forEach((ln,i)=>{
+  const p=ln.split('|');if(p.length<4||have.has(subj+p[1]))return;
+  S.probs.push({id:'m'+g+'_'+i,subj,tags:tags.split(','),lv:p[0],title:p[1],prompt:p[2],sol:p.slice(3).join('|').replace(/~/g,'\n')});
+ }));
+ S.pv3=1;save();
+}
+render();
+</script>
+</body>
+</html>
